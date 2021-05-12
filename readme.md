@@ -17,4 +17,4 @@
 
 
 ## 데분프 공유문서 링크
-https://eclass2.ajou.ac.kr/ultra/courses/_61082_1/cl/outline
+https://docs.google.com/spreadsheets/d/1QmypknLUk3I46qbl3ZsS6EHhtVDrqPhEeMhTlB1au9w/edit?usp=sharing
