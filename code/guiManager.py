@@ -32,7 +32,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.__data_params['len'] = len(value)
 
         #Load the UI Page
-        uic.loadUi('midtest.ui', self)
+        uic.loadUi('./gui/midtest.ui', self)
 
         self.plot([1,2,3,4,5,6,7,8,9,10], [30,32,34,32,33,31,29,32,35,45])
         
