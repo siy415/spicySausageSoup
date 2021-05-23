@@ -14,6 +14,7 @@
 
 ## 추가 사항
 - 추가적인 내용이 있을 경우 해당 파일 수정 부탁드립니다.
+- Finance Data Reader(https://github.com/FinanceData/FinanceDataReader)
 
 
 ## 데분프 공유문서 링크
