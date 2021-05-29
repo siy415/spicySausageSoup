@@ -15,7 +15,7 @@
 ## 추가 사항
 - 추가적인 내용이 있을 경우 해당 파일 수정 부탁드립니다.
 - Finance Data Reader(https://github.com/FinanceData/FinanceDataReader)
-- pyQt5 참고자료(https://editor752.tistory.com/category/Python/PyQt5)
+- pyQt5 참고자료(https://editor752.tistory.com/category/Python/PyQt5 / https://wikidocs.net/book/2944)
 
 
 ## 데분프 공유문서 링크
