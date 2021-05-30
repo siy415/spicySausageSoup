@@ -1,10 +1,13 @@
+import sys
+from PyQt5.QtWidgets import QApplication
 import pandas as pd
 
 import guiManager
-from CompanyList import getCompList
+from companyList import getCompList
 
 
 def main():
+    app = QApplication(sys.argv)
     df = getCompList()
     coCode = df['종목코드'].to_list()
     coName = df['회사명'].to_list()
@@ -13,8 +16,9 @@ def main():
     gi.setConfig(coCode=coCode, coName=coName)
 
     gi.insert_data()
+
     gi.show()
-    gi.exit()
+    app.exec_()
 
 
 if __name__ == '__main__':
