@@ -1,39 +1,294 @@
-#from PyQt5 import QtWidgets, uic
-#from pyqtgraph import PlotWidget, plot
+# -*- coding: utf-8 -*-
 
-from typing import List
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5 import uic
+# Form implementation generated from reading ui file 'guiView.ui'
+#
+# Created by: PyQt5 UI code generator 5.9.2
+#
+# WARNING! All changes made in this file will be lost!
+from PyQt5 import QtCore, QtGui, QtWidgets
+from pyqtgraph import PlotWidget
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+import matplotlib.pyplot as plt
+import graphManager
 
-import sys
-import os
-
-from requests.api import head
-
-#Load the UI Page
-form_class = uic.loadUiType('./gui/guiView.ui')[0]
-
-class MainWindow(QMainWindow, form_class):
-    app: QApplication
+class Ui_MainWindow(object):
     __data_params = {
         'len': int,
-        'coName': List,
-        'coCode': List,
+        'coName': list,
+        'coCode': list,
     }
 
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        print(self.btnSearch.text())
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(911, 979)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName("tabWidget")
+        self.main_tab = QtWidgets.QWidget()
+        self.main_tab.setObjectName("main_tab")
+        self.code_lineEdit = QtWidgets.QLineEdit(self.main_tab)
+        self.code_lineEdit.setGeometry(QtCore.QRect(160, 30, 191, 31))
+        self.code_lineEdit.setObjectName("code_lineEdit")
+        self.codelabel = QtWidgets.QLabel(self.main_tab)
+        self.codelabel.setGeometry(QtCore.QRect(80, 30, 71, 31))
+        self.codelabel.setTextFormat(QtCore.Qt.AutoText)
+        self.codelabel.setObjectName("codelabel")
+        self.name_lineEdit = QtWidgets.QLineEdit(self.main_tab)
+        self.name_lineEdit.setGeometry(QtCore.QRect(160, 80, 191, 31))
+        self.name_lineEdit.setObjectName("name_lineEdit")
+        self.namelabel = QtWidgets.QLabel(self.main_tab)
+        self.namelabel.setGeometry(QtCore.QRect(80, 80, 71, 31))
+        self.namelabel.setObjectName("namelabel")
+        self.startdate = QtWidgets.QLabel(self.main_tab)
+        self.startdate.setGeometry(QtCore.QRect(460, 30, 71, 31))
+        self.startdate.setObjectName("startdate")
+        self.enddate = QtWidgets.QLabel(self.main_tab)
+        self.enddate.setGeometry(QtCore.QRect(460, 80, 71, 31))
+        self.enddate.setObjectName("enddate")
+        self.start_dateEdit = QtWidgets.QDateEdit(self.main_tab)
+        self.start_dateEdit.setGeometry(QtCore.QRect(540, 31, 191, 31))
+        self.start_dateEdit.setObjectName("start_dateEdit")
+        self.end_dateEdit = QtWidgets.QDateEdit(self.main_tab)
+        self.end_dateEdit.setGeometry(QtCore.QRect(540, 80, 191, 31))
+        self.end_dateEdit.setObjectName("end_dateEdit")
+        self.mon_up_label = QtWidgets.QLabel(self.main_tab)
+        self.mon_up_label.setGeometry(QtCore.QRect(50, 570, 56, 30))
+        self.mon_up_label.setObjectName("mon_up_label")
+        self.mon_down_label = QtWidgets.QLabel(self.main_tab)
+        self.mon_down_label.setGeometry(QtCore.QRect(50, 600, 56, 30))
+        self.mon_down_label.setObjectName("mon_down_label")
+        self.mon_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.mon_eq_label.setGeometry(QtCore.QRect(50, 630, 56, 30))
+        self.mon_eq_label.setObjectName("mon_eq_label")
+        self.tue_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.tue_eq_label.setGeometry(QtCore.QRect(200, 630, 56, 30))
+        self.tue_eq_label.setObjectName("tue_eq_label")
+        self.tue_down_label = QtWidgets.QLabel(self.main_tab)
+        self.tue_down_label.setGeometry(QtCore.QRect(200, 600, 56, 30))
+        self.tue_down_label.setObjectName("tue_down_label")
+        self.tue_up_label = QtWidgets.QLabel(self.main_tab)
+        self.tue_up_label.setGeometry(QtCore.QRect(200, 570, 56, 30))
+        self.tue_up_label.setObjectName("tue_up_label")
+        self.wed_up_label = QtWidgets.QLabel(self.main_tab)
+        self.wed_up_label.setGeometry(QtCore.QRect(370, 570, 56, 30))
+        self.wed_up_label.setObjectName("wed_up_label")
+        self.wed_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.wed_eq_label.setGeometry(QtCore.QRect(370, 630, 56, 30))
+        self.wed_eq_label.setObjectName("wed_eq_label")
+        self.wed_down_label = QtWidgets.QLabel(self.main_tab)
+        self.wed_down_label.setGeometry(QtCore.QRect(370, 600, 56, 30))
+        self.wed_down_label.setObjectName("wed_down_label")
+        self.thu_down_label = QtWidgets.QLabel(self.main_tab)
+        self.thu_down_label.setGeometry(QtCore.QRect(530, 600, 56, 30))
+        self.thu_down_label.setObjectName("thu_down_label")
+        self.thu_up_label = QtWidgets.QLabel(self.main_tab)
+        self.thu_up_label.setGeometry(QtCore.QRect(530, 570, 56, 30))
+        self.thu_up_label.setObjectName("thu_up_label")
+        self.thu_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.thu_eq_label.setGeometry(QtCore.QRect(530, 630, 56, 30))
+        self.thu_eq_label.setObjectName("thu_eq_label")
+        self.fri_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.fri_eq_label.setGeometry(QtCore.QRect(690, 630, 56, 30))
+        self.fri_eq_label.setObjectName("fri_eq_label")
+        self.fri_up_label = QtWidgets.QLabel(self.main_tab)
+        self.fri_up_label.setGeometry(QtCore.QRect(690, 570, 56, 30))
+        self.fri_up_label.setObjectName("fri_up_label")
+        self.fri_down_label = QtWidgets.QLabel(self.main_tab)
+        self.fri_down_label.setGeometry(QtCore.QRect(690, 600, 56, 30))
+        self.fri_down_label.setObjectName("fri_down_label")
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.main_tab)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 199, 861, 361))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        # add graph Box by inyong shim
+        self.fig = plt.figure()
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.graphBox.addWidget(self.canvas)
+        self.graphBox.setObjectName("graphBox")
 
-        self.initProgressBar()
+        self.searchbtn = QtWidgets.QPushButton(self.main_tab)
+        self.searchbtn.setGeometry(QtCore.QRect(180, 150, 501, 41))
+        self.searchbtn.setObjectName("searchbtn")
+        self.anal_start_val_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.anal_start_val_edit.setGeometry(QtCore.QRect(190, 690, 191, 31))
+        self.anal_start_val_edit.setObjectName("anal_start_val_edit")
+        self.anal_start_value = QtWidgets.QLabel(self.main_tab)
+        self.anal_start_value.setGeometry(QtCore.QRect(60, 690, 121, 31))
+        self.anal_start_value.setTextFormat(QtCore.Qt.AutoText)
+        self.anal_start_value.setObjectName("anal_start_value")
+        self.anal_end_val_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.anal_end_val_edit.setGeometry(QtCore.QRect(550, 690, 191, 31))
+        self.anal_end_val_edit.setObjectName("anal_end_val_edit")
+        self.anal_end_value = QtWidgets.QLabel(self.main_tab)
+        self.anal_end_value.setGeometry(QtCore.QRect(420, 690, 121, 31))
+        self.anal_end_value.setTextFormat(QtCore.Qt.AutoText)
+        self.anal_end_value.setObjectName("anal_end_value")
+        self.diff_data_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.diff_data_edit.setGeometry(QtCore.QRect(190, 740, 551, 31))
+        self.diff_data_edit.setObjectName("diff_data_edit")
+        self.diff_data_label = QtWidgets.QLabel(self.main_tab)
+        self.diff_data_label.setGeometry(QtCore.QRect(60, 740, 121, 31))
+        self.diff_data_label.setTextFormat(QtCore.Qt.AutoText)
+        self.diff_data_label.setObjectName("diff_data_label")
+        self.rcmd_buy_date_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.rcmd_buy_date_edit.setGeometry(QtCore.QRect(190, 810, 191, 31))
+        self.rcmd_buy_date_edit.setObjectName("rcmd_buy_date_edit")
+        self.rcmd_buy_date_label = QtWidgets.QLabel(self.main_tab)
+        self.rcmd_buy_date_label.setGeometry(QtCore.QRect(60, 810, 121, 31))
+        self.rcmd_buy_date_label.setTextFormat(QtCore.Qt.AutoText)
+        self.rcmd_buy_date_label.setObjectName("rcmd_buy_date_label")
+        self.rcmd_sell_date_label = QtWidgets.QLabel(self.main_tab)
+        self.rcmd_sell_date_label.setGeometry(QtCore.QRect(420, 810, 121, 31))
+        self.rcmd_sell_date_label.setTextFormat(QtCore.Qt.AutoText)
+        self.rcmd_sell_date_label.setObjectName("rcmd_sell_date_label")
+        self.rcmd_sell_date_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.rcmd_sell_date_edit.setGeometry(QtCore.QRect(550, 810, 191, 31))
+        self.rcmd_sell_date_edit.setObjectName("rcmd_sell_date_edit")
+        self.tabWidget.addTab(self.main_tab, "")
+        self.list_tab = QtWidgets.QWidget()
+        self.list_tab.setObjectName("list_tab")
+        self.listCorp = QtWidgets.QTableWidget(self.list_tab)
+        self.listCorp.setGeometry(QtCore.QRect(10, 50, 351, 801))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.listCorp.sizePolicy().hasHeightForWidth())
+        self.listCorp.setSizePolicy(sizePolicy)
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(251, 251, 251))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(251, 251, 251))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(240, 240, 240))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+        self.listCorp.setPalette(palette)
+        self.listCorp.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listCorp.setAutoScroll(True)
+        self.listCorp.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.listCorp.setDragDropOverwriteMode(False)
+        self.listCorp.setAlternatingRowColors(True)
+        self.listCorp.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.listCorp.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.listCorp.setShowGrid(True)
+        self.listCorp.setWordWrap(False)
+        self.listCorp.setRowCount(31)
+        self.listCorp.setColumnCount(4)
+        self.listCorp.setObjectName("listCorp")
+        item = QtWidgets.QTableWidgetItem()
+        self.listCorp.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.listCorp.setHorizontalHeaderItem(1, item)
+        self.listCorp.verticalHeader().setVisible(False)
+        self.btnSearch = QtWidgets.QPushButton(self.list_tab)
+        self.btnSearch.setGeometry(QtCore.QRect(290, 10, 71, 31))
+        self.btnSearch.setObjectName("btnSearch")
+        self.txtBoxName = QtWidgets.QTextEdit(self.list_tab)
+        self.txtBoxName.setGeometry(QtCore.QRect(136, 10, 151, 31))
+        self.txtBoxName.setObjectName("txtBoxName")
+        self.comBoxProp = QtWidgets.QComboBox(self.list_tab)
+        self.comBoxProp.setGeometry(QtCore.QRect(10, 10, 121, 31))
+        self.comBoxProp.setObjectName("comBoxProp")
+        self.comBoxProp.addItem("")
+        self.comBoxProp.addItem("")
+        self.groupInfoCorp = QtWidgets.QGroupBox(self.list_tab)
+        self.groupInfoCorp.setGeometry(QtCore.QRect(380, 10, 441, 841))
+        self.groupInfoCorp.setObjectName("groupInfoCorp")
+        self.detailCorp = QtWidgets.QTableWidget(self.groupInfoCorp)
+        self.detailCorp.setEnabled(True)
+        self.detailCorp.setGeometry(QtCore.QRect(10, 220, 421, 601))
+        self.detailCorp.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.detailCorp.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.detailCorp.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.detailCorp.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.detailCorp.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectColumns)
+        self.detailCorp.setObjectName("detailCorp")
+        self.detailCorp.setColumnCount(0)
+        self.detailCorp.setRowCount(0)
+        self.gridLayoutWidget = QtWidgets.QWidget(self.groupInfoCorp)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 30, 421, 181))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(12)
+        self.gridLayout.setObjectName("gridLayout")
+        self.lblCorp = QtWidgets.QLabel(self.gridLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("맑은 고딕")
+        font.setPointSize(20)
+        self.lblCorp.setFont(font)
+        self.lblCorp.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblCorp.setObjectName("lblCorp")
+        self.gridLayout.addWidget(self.lblCorp, 0, 0, 1, 1)
+        self.pgBarSearch = QtWidgets.QProgressBar(self.groupInfoCorp)
+        self.pgBarSearch.setGeometry(QtCore.QRect(10, 820, 421, 10))
+        self.pgBarSearch.setProperty("value", 24)
+        self.pgBarSearch.setAlignment(QtCore.Qt.AlignCenter)
+        self.pgBarSearch.setTextVisible(False)
+        self.pgBarSearch.setOrientation(QtCore.Qt.Horizontal)
+        self.pgBarSearch.setInvertedAppearance(False)
+        self.pgBarSearch.setObjectName("pgBarSearch")
+        self.tabWidget.addTab(self.list_tab, "")
+        self.horizontalLayout.addWidget(self.tabWidget)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 911, 31))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusBar = QtWidgets.QStatusBar(MainWindow)
+        self.statusBar.setObjectName("statusBar")
+        MainWindow.setStatusBar(self.statusBar)
 
-    def initProgressBar(self):
-        return 0
-        
+        self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "주가 분석 프로그램 (Prod. 인생력전)"))
+        self.codelabel.setText(_translate("MainWindow", "종목코드  : "))
+        self.namelabel.setText(_translate("MainWindow", "종목명     : "))
+        self.startdate.setText(_translate("MainWindow", "분석일자  : "))
+        self.enddate.setText(_translate("MainWindow", "~            :"))
+        self.mon_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.mon_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.mon_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.tue_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.tue_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.tue_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.wed_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.wed_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.wed_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.thu_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.thu_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.thu_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.fri_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.fri_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.fri_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.searchbtn.setText(_translate("MainWindow", "분석"))
+        self.anal_start_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
+        self.anal_end_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
+        self.diff_data_label.setText(_translate("MainWindow", "시작일 대비           :"))
+        self.rcmd_buy_date_label.setText(_translate("MainWindow", "매수 추천 요일       :"))
+        self.rcmd_sell_date_label.setText(_translate("MainWindow", "매도 추천 요일       :"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.main_tab), _translate("MainWindow", "데이터 분석"))
+        item = self.listCorp.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "종목코드"))
+        item = self.listCorp.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "기업명"))
+        self.btnSearch.setText(_translate("MainWindow", "검색"))
+        self.comBoxProp.setItemText(0, _translate("MainWindow", "종목코드"))
+        self.comBoxProp.setItemText(1, _translate("MainWindow", "기업명"))
+        self.groupInfoCorp.setTitle(_translate("MainWindow", "기업 정보"))
+        self.lblCorp.setText(_translate("MainWindow", "Corperation"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.list_tab), _translate("MainWindow", "종목 LIST"))
+
     def setConfig(self, **kwargs):
         self.plot([1,2,3,4,5,6,7,8,9,10], [30,32,34,32,33,31,29,32,35,45])
 
@@ -49,27 +304,28 @@ class MainWindow(QMainWindow, form_class):
         self.listCorp.setColumnCount(2)
         cHeader = self.listCorp.verticalHeader()
         cHeader.setDefaultSectionSize(3)
-        cHeader.sectionResizeMode(QHeaderView.Fixed)
         rHeader = self.listCorp.horizontalHeader()
         rHeader.resizeSection(0, 120)
         rHeader.resizeSection(1, 204)
 
         self.pgBarSearch.setValue(0)
         
-
-
     def plot(self, hour ,temperature):
-        self.graphWidget.plot(hour, temperature)
+        data, blShow = graphManager.getData()
+        self.ax = self.fig.add_subplot(111)
+        self.ax.plot(data.iloc[:, blShow])
 
     def insert_data(self):
-
         for i in range(0, self.__data_params['len']):
             self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(self.__data_params['coCode'][i]))
             self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(self.__data_params['coName'][i]))
 
-    def exit(self):
-        sys.exit(self.app.exec_())
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 
-
-#if __name__ == '__main__':
-#    main()
