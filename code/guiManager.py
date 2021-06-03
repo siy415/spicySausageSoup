@@ -5,18 +5,20 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+from inspect import getsourcefile
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import matplotlib.pyplot as plt
 import graphManager
 
+data_params = {
+    'len': int,
+    'coName': list,
+    'coCode': list,
+}
+
 class Ui_MainWindow(object):
-    __data_params = {
-        'len': int,
-        'coName': list,
-        'coCode': list,
-    }
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -188,6 +190,7 @@ class Ui_MainWindow(object):
         self.btnSearch = QtWidgets.QPushButton(self.list_tab)
         self.btnSearch.setGeometry(QtCore.QRect(290, 10, 71, 31))
         self.btnSearch.setObjectName("btnSearch")
+        self.btnSearch.clicked.connect(self.btnClickedEvent)
         self.txtBoxName = QtWidgets.QTextEdit(self.list_tab)
         self.txtBoxName.setGeometry(QtCore.QRect(136, 10, 151, 31))
         self.txtBoxName.setObjectName("txtBoxName")
@@ -248,6 +251,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -289,18 +293,48 @@ class Ui_MainWindow(object):
         self.lblCorp.setText(_translate("MainWindow", "Corperation"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.list_tab), _translate("MainWindow", "종목 LIST"))
 
+
+    def btnClickedEvent(self):
+        param = {
+            "len": int,
+            "coIdx": int,
+        }
+        if not self.txtBoxName.toPlainText():
+            self.insert_data(data_params)
+        else:
+            #print(data_params)
+            param["len"] = 1
+            if self.comBoxProp.currentText() == "기업명":
+                print(self.txtBoxName.toPlainText())
+                if self.txtBoxName.toPlainText() in data_params["coName"]:
+                    param["coIdx"] = data_params["coName"].index(self.txtBoxName.toPlainText())
+                else:
+                    param["len"] = 0
+            else:
+                if self.txtBoxName.toPlainText() in data_params["coCode"]:
+                    param["coIdx"] = data_params["coCode"].index(self.txtBoxName.toPlainText())
+                else:
+                    param["len"] = 0
+
+            self.insert_data(param)
+
+
+
     def setConfig(self, **kwargs):
         self.plot([1,2,3,4,5,6,7,8,9,10], [30,32,34,32,33,31,29,32,35,45])
 
         self.confCorpList(kwargs.items())
 
+
     def confCorpList(self, items: list):
+        global data_params
+
         for key, value in items:
-            self.__data_params[key] = value
+            data_params[key] = value
             if key == 'coName':
-                self.__data_params['len'] = len(value)
+                data_params['len'] = len(value)
         
-        self.listCorp.setRowCount(self.__data_params['len'])
+        self.listCorp.setRowCount(data_params['len'])
         self.listCorp.setColumnCount(2)
         cHeader = self.listCorp.verticalHeader()
         cHeader.setDefaultSectionSize(3)
@@ -309,17 +343,33 @@ class Ui_MainWindow(object):
         rHeader.resizeSection(1, 204)
 
         self.pgBarSearch.setValue(0)
-        
+
+    
+    def getComboBox(self):
+        return self.comBoxProp
+
+
     def plot(self, hour ,temperature):
         data, blShow = graphManager.getData()
         self.ax = self.fig.add_subplot(111)
         self.ax.plot(data.iloc[:, blShow])
 
-    def insert_data(self):
-        for i in range(0, self.__data_params['len']):
-            self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(self.__data_params['coCode'][i]))
-            self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(self.__data_params['coName'][i]))
-
+    def insert_data(self, param):
+        global data_params
+        print(param)
+        for i in range(0, data_params['len']):
+            if param["len"] <= 1:
+                if i < param["len"]:
+                    self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(data_params['coCode'][param["coIdx"]]))
+                    self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(data_params['coName'][param["coIdx"]]))
+                else:
+                    self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(""))
+                    self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(""))
+            else:
+                self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(data_params['coCode'][i]))
+                self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(data_params['coName'][i]))
+                
+'''
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -328,4 +378,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
+'''
