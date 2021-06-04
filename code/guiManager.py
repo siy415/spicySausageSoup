@@ -9,9 +9,12 @@ from inspect import getsourcefile
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import graphManager
 import jjson
+import numpy as np
 
 data_params = {
     'len': int,
@@ -106,11 +109,11 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 199, 861, 361))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         # add graph Box by inyong shim
-        self.fig = plt.figure()
-        self.canvas = FigureCanvasQTAgg(self.fig)
+        #self.fig = plt.figure()
+        #self.canvas = FigureCanvasQTAgg(self.fig)
         self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.graphBox.addWidget(self.canvas)
-        self.graphBox.setObjectName("graphBox")
+        #self.graphBox.addWidget(self.canvas)
+        #self.graphBox.setObjectName("graphBox")
 
         self.searchbtn = QtWidgets.QPushButton(self.main_tab)
         self.searchbtn.setGeometry(QtCore.QRect(180, 150, 501, 41))
@@ -118,6 +121,7 @@ class Ui_MainWindow(object):
         self.anal_start_val_edit = QtWidgets.QLineEdit(self.main_tab)
         self.anal_start_val_edit.setGeometry(QtCore.QRect(190, 690, 191, 31))
         self.anal_start_val_edit.setObjectName("anal_start_val_edit")
+        self.anal_start_val_edit.setReadOnly(True)
         self.anal_start_value = QtWidgets.QLabel(self.main_tab)
         self.anal_start_value.setGeometry(QtCore.QRect(60, 690, 121, 31))
         self.anal_start_value.setTextFormat(QtCore.Qt.AutoText)
@@ -125,6 +129,7 @@ class Ui_MainWindow(object):
         self.anal_end_val_edit = QtWidgets.QLineEdit(self.main_tab)
         self.anal_end_val_edit.setGeometry(QtCore.QRect(550, 690, 191, 31))
         self.anal_end_val_edit.setObjectName("anal_end_val_edit")
+        self.anal_end_val_edit.setReadOnly(True)
         self.anal_end_value = QtWidgets.QLabel(self.main_tab)
         self.anal_end_value.setGeometry(QtCore.QRect(420, 690, 121, 31))
         self.anal_end_value.setTextFormat(QtCore.Qt.AutoText)
@@ -132,6 +137,7 @@ class Ui_MainWindow(object):
         self.diff_data_edit = QtWidgets.QLineEdit(self.main_tab)
         self.diff_data_edit.setGeometry(QtCore.QRect(190, 740, 551, 31))
         self.diff_data_edit.setObjectName("diff_data_edit")
+        self.diff_data_edit.setReadOnly(True)
         self.diff_data_label = QtWidgets.QLabel(self.main_tab)
         self.diff_data_label.setGeometry(QtCore.QRect(60, 740, 121, 31))
         self.diff_data_label.setTextFormat(QtCore.Qt.AutoText)
@@ -139,6 +145,7 @@ class Ui_MainWindow(object):
         self.rcmd_buy_date_edit = QtWidgets.QLineEdit(self.main_tab)
         self.rcmd_buy_date_edit.setGeometry(QtCore.QRect(190, 810, 191, 31))
         self.rcmd_buy_date_edit.setObjectName("rcmd_buy_date_edit")
+        self.rcmd_buy_date_edit.setReadOnly(True)
         self.rcmd_buy_date_label = QtWidgets.QLabel(self.main_tab)
         self.rcmd_buy_date_label.setGeometry(QtCore.QRect(60, 810, 121, 31))
         self.rcmd_buy_date_label.setTextFormat(QtCore.Qt.AutoText)
@@ -150,6 +157,7 @@ class Ui_MainWindow(object):
         self.rcmd_sell_date_edit = QtWidgets.QLineEdit(self.main_tab)
         self.rcmd_sell_date_edit.setGeometry(QtCore.QRect(550, 810, 191, 31))
         self.rcmd_sell_date_edit.setObjectName("rcmd_sell_date_edit")
+        self.rcmd_sell_date_edit.setReadOnly(True)
         self.tabWidget.addTab(self.main_tab, "")
         self.list_tab = QtWidgets.QWidget()
         self.list_tab.setObjectName("list_tab")
@@ -272,20 +280,35 @@ class Ui_MainWindow(object):
         self.startdate.setText(_translate("MainWindow", "분석일자  : "))
         self.enddate.setText(_translate("MainWindow", "~            :"))
         self.mon_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.mon_up_label.setGeometry(QtCore.QRect(170, 570, 56, 30))
         self.mon_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.mon_down_label.setGeometry(QtCore.QRect(170, 600, 56, 30))
         self.mon_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.tue_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.tue_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.mon_eq_label.setGeometry(QtCore.QRect(170, 630, 56, 30))
         self.tue_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.tue_up_label.setGeometry(QtCore.QRect(300, 570, 56, 30))
+        self.tue_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.tue_down_label.setGeometry(QtCore.QRect(300, 600, 56, 30))
+        self.tue_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.tue_eq_label.setGeometry(QtCore.QRect(300, 630, 56, 30))
         self.wed_up_label.setText(_translate("MainWindow", "% 상승"))
-        self.wed_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.wed_up_label.setGeometry(QtCore.QRect(430, 570, 56, 30))
         self.wed_down_label.setText(_translate("MainWindow", "% 하락"))
-        self.thu_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.wed_down_label.setGeometry(QtCore.QRect(430, 600, 56, 30))
+        self.wed_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.wed_eq_label.setGeometry(QtCore.QRect(430, 630, 56, 30))
         self.thu_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.thu_up_label.setGeometry(QtCore.QRect(560, 570, 56, 30))
+        self.thu_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.thu_down_label.setGeometry(QtCore.QRect(560, 600, 56, 30))
         self.thu_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.fri_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.thu_eq_label.setGeometry(QtCore.QRect(560, 630, 56, 30))
         self.fri_up_label.setText(_translate("MainWindow", "% 상승"))
+        self.fri_up_label.setGeometry(QtCore.QRect(690, 570, 56, 30))
         self.fri_down_label.setText(_translate("MainWindow", "% 하락"))
+        self.fri_down_label.setGeometry(QtCore.QRect(690, 600, 56, 30))
+        self.fri_eq_label.setText(_translate("MainWindow", "% 동일"))
+        self.fri_eq_label.setGeometry(QtCore.QRect(690, 630, 56, 30))
         self.searchbtn.setText(_translate("MainWindow", "분석"))
         self.anal_start_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
         self.anal_end_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
@@ -400,9 +423,39 @@ class Ui_MainWindow(object):
 
 
     def plot(self, hour ,temperature):
-        data, blShow = graphManager.getData()
-        self.ax = self.fig.add_subplot(111)
-        self.ax.plot(data.iloc[:, blShow])
+        #data, blShow = graphManager.getData()
+        #self.ax = self.fig.add_subplot(111)
+        #self.ax.plot(data.iloc[:, blShow])
+
+        fig, ax = plt.subplots()
+
+        #x_label_list = ['월', '화', '수', '목', '금']
+        x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+        bar_width = 0.2
+        bar_height = 1
+        up_data = [20, 40, 30, 50, 15]
+        down_data = [30, 50, 20, 10, 120]
+        eq_data = [10, 30, 45, 15, 25]
+        index = np.arange(len(x_label_list))
+
+        ax.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
+        ax.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
+        ax.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
+        
+        ax.legend(loc='upper right', fontsize=7.5)
+
+        #ax.bar([0], [30, 38, 34])
+        
+        plt.xticks(index + bar_width + 0.1, x_label_list)
+
+        y_max = plt.ylim()[1] + 40
+        plt.ylim([0, y_max])
+
+        canvas = FigureCanvasQTAgg(fig)
+        canvas.draw()
+
+        self.graphBox.addWidget(canvas)
+        canvas.show()
 
     def insert_data(self, param):
         global data_params
