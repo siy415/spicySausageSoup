@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5 import QtWidgets
 import pandas as pd
 import guiManager
+import jjson
 from companyList import getCompList
 
 def main():
@@ -18,6 +19,7 @@ def main():
     gi = guiManager.Ui_MainWindow()
     gi.setupUi(MainWindow)
     gi.setConfig(coCode=coCode, coName=coName)
+    jjson.getCorpCode()
 
     gi.insert_data(guiManager.data_params)
 

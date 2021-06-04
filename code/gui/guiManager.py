@@ -5,22 +5,10 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
-from inspect import getsourcefile
-from PyQt5 import QtCore, QtGui, QtWidgets
-from pyqtgraph import PlotWidget
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-import matplotlib.pyplot as plt
-import graphManager
-import jjson
 
-data_params = {
-    'len': int,
-    'coName': list,
-    'coCode': list,
-}
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(911, 979)
@@ -102,16 +90,6 @@ class Ui_MainWindow(object):
         self.fri_down_label = QtWidgets.QLabel(self.main_tab)
         self.fri_down_label.setGeometry(QtCore.QRect(690, 600, 56, 30))
         self.fri_down_label.setObjectName("fri_down_label")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.main_tab)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 199, 861, 361))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        # add graph Box by inyong shim
-        self.fig = plt.figure()
-        self.canvas = FigureCanvasQTAgg(self.fig)
-        self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.graphBox.addWidget(self.canvas)
-        self.graphBox.setObjectName("graphBox")
-
         self.searchbtn = QtWidgets.QPushButton(self.main_tab)
         self.searchbtn.setGeometry(QtCore.QRect(180, 150, 501, 41))
         self.searchbtn.setObjectName("searchbtn")
@@ -150,6 +128,12 @@ class Ui_MainWindow(object):
         self.rcmd_sell_date_edit = QtWidgets.QLineEdit(self.main_tab)
         self.rcmd_sell_date_edit.setGeometry(QtCore.QRect(550, 810, 191, 31))
         self.rcmd_sell_date_edit.setObjectName("rcmd_sell_date_edit")
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.main_tab)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 199, 861, 361))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget.addTab(self.main_tab, "")
         self.list_tab = QtWidgets.QWidget()
         self.list_tab.setObjectName("list_tab")
@@ -160,8 +144,6 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listCorp.sizePolicy().hasHeightForWidth())
         self.listCorp.setSizePolicy(sizePolicy)
-        # self.listCorp.cellClicked.connect(self.listIdxChangedEvent)
-        self.listCorp.currentCellChanged.connect(self.listIdxChangedEvent)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(251, 251, 251))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -193,11 +175,9 @@ class Ui_MainWindow(object):
         self.btnSearch = QtWidgets.QPushButton(self.list_tab)
         self.btnSearch.setGeometry(QtCore.QRect(290, 10, 71, 31))
         self.btnSearch.setObjectName("btnSearch")
-        self.btnSearch.clicked.connect(self.btnClickedEvent)
-        self.txtBoxName = QtWidgets.QLineEdit(self.list_tab)
+        self.txtBoxName = QtWidgets.QTextEdit(self.list_tab)
         self.txtBoxName.setGeometry(QtCore.QRect(136, 10, 151, 31))
         self.txtBoxName.setObjectName("txtBoxName")
-        self.txtBoxName.returnPressed.connect(self.btnClickedEvent)
         self.comBoxProp = QtWidgets.QComboBox(self.list_tab)
         self.comBoxProp.setGeometry(QtCore.QRect(10, 10, 121, 31))
         self.comBoxProp.setObjectName("comBoxProp")
@@ -217,13 +197,8 @@ class Ui_MainWindow(object):
         self.detailCorp.setObjectName("detailCorp")
         self.detailCorp.setColumnCount(0)
         self.detailCorp.setRowCount(0)
-        self.detailCorp.setShowGrid(True)
-        self.detailCorp.setWordWrap(True)
-        self.detailCorp.setAlternatingRowColors(True)
-        self.detailCorp.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.detailCorp.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.detailCorp.setAutoScroll(True)
         self.detailCorp.horizontalHeader().setVisible(False)
+        self.detailCorp.verticalHeader().setVisible(False)
         self.gridLayoutWidget = QtWidgets.QWidget(self.groupInfoCorp)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 30, 421, 181))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
@@ -262,7 +237,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -298,128 +272,13 @@ class Ui_MainWindow(object):
         item = self.listCorp.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "기업명"))
         self.btnSearch.setText(_translate("MainWindow", "검색"))
-        self.comBoxProp.setItemText(0, _translate("MainWindow", "기업명"))
-        self.comBoxProp.setItemText(1, _translate("MainWindow", "종목코드"))
+        self.comBoxProp.setItemText(0, _translate("MainWindow", "종목코드"))
+        self.comBoxProp.setItemText(1, _translate("MainWindow", "기업명"))
         self.groupInfoCorp.setTitle(_translate("MainWindow", "기업 정보"))
         self.lblCorp.setText(_translate("MainWindow", "Corperation"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.list_tab), _translate("MainWindow", "종목 LIST"))
 
 
-    def btnClickedEvent(self):
-        print("A")
-        param = {
-            "len": int,
-            "coIdx": int,
-        }
-        print(self.txtBoxName.text())
-        if self.txtBoxName.text() == "":
-            self.insert_data(data_params)
-        else:
-            #print(data_params)
-            param["len"] = 1
-            if self.comBoxProp.currentText() == "기업명":
-                print(self.txtBoxName.text())
-                if self.txtBoxName.text() in data_params["coName"]:
-                    param["coIdx"] = data_params["coName"].index(self.txtBoxName.text())
-                else:
-                    param["len"] = 0
-            else:
-                if self.txtBoxName.text() in data_params["coCode"]:
-                    param["coIdx"] = data_params["coCode"].index(self.txtBoxName.text())
-                else:
-                    param["len"] = 0
-
-            self.insert_data(param)
-            if(param["len"] > 0):
-                self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
-
-    
-    def listIdxChangedEvent(self):
-        param = {}
-        dictName = { 
-            "corp_name": "기업명", 
-            "ceo_nm"   : "대표", 
-            "adres"    : "주소",
-            "hm_url"   : "홈페이지", 
-            "phn_no"   : "전화번호"
-        }
-
-        r = self.listCorp.currentRow()
-        # c = self.listCorp.currentColumn()
-        if self.listCorp.item(r, 1).text() != "":
-            print(self.listCorp.item(r, 1).text())
-            self.lblCorp.setText(self.listCorp.item(r, 1).text())
-            corpNum = jjson.getCompNum(self.listCorp.item(r, 0).text())
-            res = jjson.getCompany(corpNum)
-            i = 0
-            for key in dictName.keys():
-                param[dictName[key]] = res[key]
-
-            print("param")
-            print(param)
-            self.showCorpDetail(param)
-
-
-    def showCorpDetail(self, param: dict):
-        if self.detailCorp.rowCount != len(param):
-            self.detailCorp.setRowCount(len(param))
-            self.detailCorp.setColumnCount(1)
-            rHeader = self.detailCorp.horizontalHeader()
-            rHeader.resizeSection(0, 300)
-            lparam = list(param.keys())
-            for i in range(0, len(param)):
-                item = QtWidgets.QTableWidgetItem()
-                item.setText(lparam[i])
-                self.detailCorp.setVerticalHeaderItem(i, item)
-                self.detailCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(param[lparam[i]]))
-
-        return 0
-
-
-    def setConfig(self, **kwargs):
-        self.confCorpList(kwargs.items())
-
-
-    def confCorpList(self, items: list):
-        global data_params
-
-        for key, value in items:
-            data_params[key] = value
-            if key == 'coName':
-                data_params['len'] = len(value)
-        
-        self.listCorp.setRowCount(data_params['len'])
-        self.listCorp.setColumnCount(2)
-        cHeader = self.listCorp.verticalHeader()
-        cHeader.setDefaultSectionSize(3)
-        rHeader = self.listCorp.horizontalHeader()
-        rHeader.resizeSection(0, 120)
-        rHeader.resizeSection(1, 204)
-
-        self.pgBarSearch.setValue(0)
-
-
-    def plot(self, hour ,temperature):
-        data, blShow = graphManager.getData()
-        self.ax = self.fig.add_subplot(111)
-        self.ax.plot(data.iloc[:, blShow])
-
-    def insert_data(self, param):
-        global data_params
-        # print(param)
-        for i in range(0, data_params['len']):
-            if param["len"] <= 1:
-                if i < param["len"]:
-                    self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(data_params['coCode'][param["coIdx"]]))
-                    self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(data_params['coName'][param["coIdx"]]))
-                else:
-                    self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(""))
-                    self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(""))
-            else:
-                self.listCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(data_params['coCode'][i]))
-                self.listCorp.setItem(i, 1, QtWidgets.QTableWidgetItem(data_params['coName'][i]))
-                
-'''
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -428,4 +287,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-'''
+
