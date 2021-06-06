@@ -57,9 +57,13 @@ class Ui_MainWindow(object):
         self.start_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.start_dateEdit.setGeometry(QtCore.QRect(540, 31, 191, 31))
         self.start_dateEdit.setObjectName("start_dateEdit")
+        self.start_dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.start_dateEdit.setCalendarPopup(True)
         self.end_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.end_dateEdit.setGeometry(QtCore.QRect(540, 80, 191, 31))
         self.end_dateEdit.setObjectName("end_dateEdit")
+        self.end_dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.end_dateEdit.setCalendarPopup(True)
         self.mon_up_label = QtWidgets.QLabel(self.main_tab)
         self.mon_up_label.setGeometry(QtCore.QRect(50, 570, 56, 30))
         self.mon_up_label.setObjectName("mon_up_label")
@@ -118,6 +122,7 @@ class Ui_MainWindow(object):
         self.searchbtn = QtWidgets.QPushButton(self.main_tab)
         self.searchbtn.setGeometry(QtCore.QRect(180, 150, 501, 41))
         self.searchbtn.setObjectName("searchbtn")
+        self.searchbtn.clicked.connect(self.mainSearchBtnClickedEvent)
         self.anal_start_val_edit = QtWidgets.QLineEdit(self.main_tab)
         self.anal_start_val_edit.setGeometry(QtCore.QRect(190, 690, 191, 31))
         self.anal_start_val_edit.setObjectName("anal_start_val_edit")
@@ -356,6 +361,12 @@ class Ui_MainWindow(object):
             if(param["len"] > 0):
                 self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
 
+    def mainSearchBtnClickedEvent(self):
+        print("종목코드 : " + self.code_lineEdit.text())
+        print("종목명 : " + self.name_lineEdit.text())
+        print("START DATE : " + self.start_dateEdit.text())
+        print("END DATE : " + self.end_dateEdit.text())
+        
     
     def listIdxChangedEvent(self):
         param = {}
