@@ -36,7 +36,7 @@ class WebDataReader:
             return pd.DataFrame()
         data = '\n'.join(data_list)
         df = pd.read_csv(StringIO(data), delimiter='|', header=None, dtype={0:str})
-        df.columns  = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+        df.columns  = ['Date', 'Open', 'High', 'Low', 'Close','Volume']
         df['Date'] = pd.to_datetime(df['Date'], format='%Y%m%d')
         df.set_index('Date', inplace=True)
         df.sort_index(inplace=True)
@@ -56,6 +56,8 @@ def DataReader(corp_code, start_date=None, end_date=None, exchange=None, data_so
 
 
 # 삼성전자(005930) 전체 (1996-11-05 ~ 현재)
-df = DataReader('005930', '2021-01-01', '2021-12-31')
-
+df = DataReader('005930', '2016-04-04', '2021-12-31')
+df = df.reset_index().rename(columns={"index": "id"})
+#df['day-of-week'] = df['Date'].dt.day_name()
+df.insert(1,'day-of-week', df['Date'].dt.day_name())
 print(df)
