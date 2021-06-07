@@ -1,87 +1,56 @@
-header =[] #첫줄변수
+pdata = df
+#print(type(pdata))
 
-s_data = [] 
+df2 = pd.DataFrame(pdata)
+df2.head()
+print(df2[:0])#헤더
 
-c_list = []
+start_val = df2.iloc[0][5] #시작날짜 종가
+print('시작일자 종가:', int(start_val))
+
+end_val = df2.iloc[-1][5] #마지막날짜 종가
+print('종료일자 종가:', int(end_val))
+
+se_val = int(end_val)-int(start_val) #시작일, 종료일 차이
+print('시작일자, 종료일자 차이: ', se_val)
+
+max_val = df2['Close'].max() #기간 내 최고가
+print('기간 내 최고가:', int(max_val))
+
+min_val = df2['Close'].min() #기간 내 최저가
+print('기간 내 최저가:', int(min_val))
+
+mm_val = int(max_val)-int(min_val) #기간 내 최고, 최저가 차이
+print('기간 내 최고가, 최저가 차이:', mm_val)
 
 
-ed_list = []
-endprice = 0
 
+df2['Up8']=df2.Close > df2.Close.shift() # 상승 한 경우 True
+df2['Same9'] = df2.Close == df2.Close.shift() # 동일값일 경우 True
+df2['Down10'] = df2.Close < df2.Close.shift() # 하락 한 경우 True
 
-st_list = []
-startprice = 0
-
-bfprice = 0
-afprice = 0
-maxprice = 0
-
-upcounter = 0
-downcounter = 0
-samecounter = 0
-line_counter = 0
-
-result_list = []
+print(df2)
+#df2['Days'] = df2['Date'].dt2.weekday 날짜 column 기입
 
 days = {} #등락여부 카운트
 
-pidays= {} #매수 매도 합산값
+items = {} #딕셔너리 선언
+l = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] #리스트 조건
 
-buyval = 1
-sellval = 1
+for dow in l: #상승하락동일 카운트
+    df3 = df2[df['DOW'] == dow]
+    up_count = len(df3[df3['Up8'] == True]) #up count
+    same_count = len(df3[df3['Same9'] == True]) #same count
+    down_count = len(df3[df3['Down10'] == True]) #down count
 
-with open ('가격정보.csv','r') as costname:
+    total_count = len(df3) #total값
+    
+    #상승하락동일 퍼센트계산
+    up_countval = round((up_count/total_count)*100,2) # 퍼센트단위 계산
+    same_countval = round((same_count/total_count)*100,2)
+    down_countval = round((down_count/total_count)*100,2)
 
-    while 1:
-        data = costname.readline()
+    items[dow] = {'up': up_count, 'down': down_count, 'same': same_count, 'total': total_count, 
+    'upval': up_countval, 'sameval': same_countval, 'downval': down_countval} #count 값 dict 저장
 
-        if not data: #마지막줄에서 뒤로 한칸 가서 종가 확인하는법?
-            ed_list = data.split(",")
-            endprice = bfprice
-            break
-
-        if line_counter==0: #첫번째 줄 헤더설정. 
-            header = data.split(",")
-        else:           
-            if line_counter==1: #두번째 줄에서 시작가격 변수에 넣음. 
-                sp_list = data.split(",")
-                startprice = int(sp_list[2])
-                
-            c_list = data.split(",") #리스트 읽기
-            day = c_list[1]
-            #tot_list.append(c_list)
-
-            if int(c_list[2])>maxprice: #기간최고가
-                maxprice = int(c_list[2])
-
-            if day not in days: #날짜별 상승여부
-                days[day] = {'up':0, 'down':0, 'same':0}
-                
-            if day not in pidays: #날짜별 매도 매수값
-                pidays[day] = {'buy':0, 'sell':0}
-
-            pidays[day]['buy'] += int(c_list[4]) #매수매도량 요일별 기입
-            pidays[day]['sell'] += int(c_list[5])
-
-            if int(c_list[2]) > bfprice:  # 이전가격 비교해서 상승했을경우 upcounter+1
-                days[day]['up'] +=1
-                
-            elif int(c_list[2]) < bfprice: # 이전가격 비교해서 하락했을경우 downmcounter+1
-                days[day]['down'] +=1
-                
-            else: # 이전가격 비교해서 동일했을경우 samecounter+1
-                days[day]['same'] +=1
-
-            
-
-            bfprice = int(c_list[2])
-                
-
-        line_counter +=1
-
-
-
-print("시작, 종료가격, 기간최고가", startprice, endprice, maxprice)
-print(days) #일자별 통계치
-
-print(pidays) #매수매도 트렌드
+print('각 일자별 카운트: ', items)
