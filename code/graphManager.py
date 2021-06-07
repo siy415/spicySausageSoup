@@ -1,12 +1,12 @@
 from typing import List
-import FinanceDataReader as fdr
+# import FinanceDataReader as fdr
 import matplotlib.pyplot as plt
 import pandas as pd
 
 ma_ls = [5, 20, 60, 120]
 
 # 삼성전자(005930) 전체 (1996-11-05 ~ 현재)
-df = fdr.DataReader('005930', '2005-05-01', 'now')
+# df = fdr.DataReader('005930', '2005-05-01', 'now')
 print(len(df))
 cnt = 0
 blShow: List

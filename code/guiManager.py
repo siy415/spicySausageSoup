@@ -7,14 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 from inspect import getsourcefile
 from PyQt5 import QtCore, QtGui, QtWidgets
-from pyqtgraph import PlotWidget
+# from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import graphManager
+# import graphManager
 import jjson
 import numpy as np
+import webbrowser
 
 data_params = {
     'len': int,
@@ -175,6 +176,7 @@ class Ui_MainWindow(object):
         self.listCorp.setSizePolicy(sizePolicy)
         # self.listCorp.cellClicked.connect(self.listIdxChangedEvent)
         self.listCorp.currentCellChanged.connect(self.listIdxChangedEvent)
+        self.listCorp.doubleClicked.connect(self.corpDoubleClickedEvent)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(251, 251, 251))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -237,6 +239,7 @@ class Ui_MainWindow(object):
         self.detailCorp.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.detailCorp.setAutoScroll(True)
         self.detailCorp.horizontalHeader().setVisible(False)
+        self.detailCorp.cellClicked.connect(self.detailCellClicked)
         self.gridLayoutWidget = QtWidgets.QWidget(self.groupInfoCorp)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 30, 421, 181))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
@@ -368,6 +371,26 @@ class Ui_MainWindow(object):
         print("END DATE : " + self.end_dateEdit.text())
         
     
+    def corpDoubleClickedEvent(self):
+        r = self.listCorp.currentRow()
+
+        if self.listCorp.item(r, 1).text() != "":
+            self.code_lineEdit.setText(self.listCorp.item(r, 0).text())
+            self.name_lineEdit.setText(self.listCorp.item(r, 1).text())
+
+            self.tabWidget.setCurrentIndex(self.tabWidget.currentIndex()-1)
+        return 0
+
+
+    def detailCellClicked(self):
+        r = self.detailCorp.currentRow()
+        rHeadrer = self.detailCorp.verticalHeaderItem(r)
+
+        if rHeadrer.text() == "홈페이지" and self.detailCorp.item(r, 0).text() != '-':
+            webbrowser.open(self.detailCorp.currentItem().text())
+
+
+    
     def listIdxChangedEvent(self):
         param = {}
         dictName = { 
@@ -405,6 +428,9 @@ class Ui_MainWindow(object):
                 item = QtWidgets.QTableWidgetItem()
                 item.setText(lparam[i])
                 self.detailCorp.setVerticalHeaderItem(i, item)
+                if lparam[i] == "홈페이지":
+                    self.detailCorp.setCurrentCell(i, 0)
+                    self.detailCorp.palette().setColor(QtGui.QPalette.text(), QtGui.QColor("Blue"))
                 self.detailCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(param[lparam[i]]))
 
         return 0
@@ -425,7 +451,7 @@ class Ui_MainWindow(object):
         self.listCorp.setRowCount(data_params['len'])
         self.listCorp.setColumnCount(2)
         cHeader = self.listCorp.verticalHeader()
-        cHeader.setDefaultSectionSize(3)
+        cHeader.setDefaultSectionSize(35)
         rHeader = self.listCorp.horizontalHeader()
         rHeader.resizeSection(0, 120)
         rHeader.resizeSection(1, 204)
