@@ -428,10 +428,14 @@ class Ui_MainWindow(object):
                 item = QtWidgets.QTableWidgetItem()
                 item.setText(lparam[i])
                 self.detailCorp.setVerticalHeaderItem(i, item)
-                if lparam[i] == "홈페이지":
-                    self.detailCorp.setCurrentCell(i, 0)
-                    self.detailCorp.palette().setColor(QtGui.QPalette.text(), QtGui.QColor("Blue"))
                 self.detailCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(param[lparam[i]]))
+                self.detailCorp.setCurrentCell(i, 0)
+                if lparam[i] == "홈페이지":
+                    cell = self.detailCorp.currentItem()
+                    cell.setForeground(QtGui.QBrush(QtCore.Qt.blue))
+                    font = QtGui.QFont()
+                    font.setUnderline(True)
+                    cell.setFont(font)
 
         return 0
 
