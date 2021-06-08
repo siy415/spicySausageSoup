@@ -51,13 +51,8 @@ def DataReader(corp_code, start_date=None, end_date=None, exchange=None, data_so
 
     if (corp_code[:5].isdigit() and exchange==None) or \
        (corp_code[:5].isdigit() and exchange and exchange.upper() in ['KRX', '한국거래소']):
-        return WebDataReader(corp_code, start_date, end_date, exchange, data_source).read()
-
-
-
-# 삼성전자(005930) 전체 (1996-11-05 ~ 현재)
-df = DataReader('005930', '2016-04-04', '2021-12-31')
-df = df.reset_index().rename(columns={"index": "id"})
-#df['day-of-week'] = df['Date'].dt.day_name()
-df.insert(1,'day-of-week', df['Date'].dt.day_name())
-print(df)
+        df=WebDataReader(corp_code, start_date, end_date, exchange, data_source).read()
+        df = df.reset_index().rename(columns={"index": "id"})
+        #df['DOW'] = df['Date'].dt.day_name()
+        df.insert(1,'DOW', df['Date'].dt.day_name())
+        return df
