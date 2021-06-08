@@ -10,12 +10,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 # from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import matplotlib
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 # import graphManager
 import jjson
 import numpy as np
 import webbrowser
+import financeData3
+import sys
 
 data_params = {
     'len': int,
@@ -114,11 +117,11 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 199, 861, 361))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         # add graph Box by inyong shim
-        #self.fig = plt.figure()
-        #self.canvas = FigureCanvasQTAgg(self.fig)
         self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        #self.graphBox.addWidget(self.canvas)
-        #self.graphBox.setObjectName("graphBox")
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.graphBox.addWidget(self.canvas)
+        self.canvas.draw()
 
         self.searchbtn = QtWidgets.QPushButton(self.main_tab)
         self.searchbtn.setGeometry(QtCore.QRect(180, 150, 501, 41))
@@ -365,10 +368,11 @@ class Ui_MainWindow(object):
                 self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
 
     def mainSearchBtnClickedEvent(self):
-        print("종목코드 : " + self.code_lineEdit.text())
-        print("종목명 : " + self.name_lineEdit.text())
-        print("START DATE : " + self.start_dateEdit.text())
-        print("END DATE : " + self.end_dateEdit.text())
+
+        plt.cla()
+        self.graphBox.removeWidget(self.canvas)
+            
+        self.plot(1, 1)
         
     
     def corpDoubleClickedEvent(self):
@@ -462,41 +466,84 @@ class Ui_MainWindow(object):
 
         self.pgBarSearch.setValue(0)
 
-
     def plot(self, hour ,temperature):
         #data, blShow = graphManager.getData()
         #self.ax = self.fig.add_subplot(111)
         #self.ax.plot(data.iloc[:, blShow])
 
-        fig, ax = plt.subplots()
-
         #x_label_list = ['월', '화', '수', '목', '금']
         x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
         bar_width = 0.2
         bar_height = 1
-        up_data = [20, 40, 30, 50, 15]
-        down_data = [30, 50, 20, 10, 120]
-        eq_data = [10, 30, 45, 15, 25]
         index = np.arange(len(x_label_list))
 
-        ax.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
-        ax.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
-        ax.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
-        
-        ax.legend(loc='upper right', fontsize=7.5)
+        if hour == 0 and temperature == 0:
+            up_data = [0, 0, 0, 0, 0]
+            down_data = [0, 0, 0, 0, 0]
+            eq_data = [0, 0, 0, 0, 0]
 
-        #ax.bar([0], [30, 38, 34])
+        elif self.code_lineEdit.text() == "삼성":
+            up_data = [120, 140, 130, 150, 115]
+            down_data = [130, 150, 120, 110, 120]
+            eq_data = [110, 130, 145, 115, 125]
+
+        elif self.code_lineEdit.text() == "현대":
+            up_data = [220, 240, 230, 250, 215]
+            down_data = [230, 250, 220, 210, 220]
+            eq_data = [210, 230, 245, 215, 225]
+
+        elif self.code_lineEdit.text() == "LG":
+            up_data = [320, 340, 330, 350, 315]
+            down_data = [330, 350, 320, 310, 320]
+            eq_data = [310, 330, 345, 315, 325]
+
+        else:
+            up_data = [20, 40, 30, 50, 15]
+            down_data = [30, 50, 20, 10, 120]
+            eq_data = [10, 30, 45, 15, 25]
+        
+        self.ax.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
+        self.ax.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
+        self.ax.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
+
+        self.ax.legend(loc='upper right', fontsize=7.5)
         
         plt.xticks(index + bar_width + 0.1, x_label_list)
 
-        y_max = plt.ylim()[1] + 40
+        y_max = plt.ylim()[1] + 100
         plt.ylim([0, y_max])
 
-        canvas = FigureCanvasQTAgg(fig)
-        canvas.draw()
+        self.setLabel(up_data, down_data, eq_data)
 
-        self.graphBox.addWidget(canvas)
-        canvas.show()
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.canvas.draw()
+
+        self.graphBox.addWidget(self.canvas)
+
+
+    def setLabel(self, up, down, eq):
+        _translate = QtCore.QCoreApplication.translate
+        
+        self.mon_up_label.setText(_translate("MainWindow", str(up[0]) + "% 상승"))
+        self.mon_down_label.setText(_translate("MainWindow", str(down[0]) + "% 하락"))
+        self.mon_eq_label.setText(_translate("MainWindow", str(eq[0]) + "% 동일"))
+
+        self.tue_up_label.setText(_translate("MainWindow", str(up[1]) + "% 상승"))
+        self.tue_down_label.setText(_translate("MainWindow", str(down[1]) + "% 하락"))
+        self.tue_eq_label.setText(_translate("MainWindow", str(eq[1]) + "% 동일"))
+
+        self.wed_up_label.setText(_translate("MainWindow", str(up[2]) + "% 상승"))
+        self.wed_down_label.setText(_translate("MainWindow", str(down[2]) + "% 하락"))
+        self.wed_eq_label.setText(_translate("MainWindow", str(eq[2]) + "% 동일"))
+
+        self.thu_up_label.setText(_translate("MainWindow", str(up[3]) + "% 상승"))
+        self.thu_down_label.setText(_translate("MainWindow", str(down[3]) + "% 하락"))
+        self.thu_eq_label.setText(_translate("MainWindow", str(eq[3]) + "% 동일"))
+
+        self.fri_up_label.setText(_translate("MainWindow", str(up[4]) + "% 상승"))
+        self.fri_down_label.setText(_translate("MainWindow", str(down[4]) + "% 하락"))
+        self.fri_eq_label.setText(_translate("MainWindow", str(eq[4]) + "% 동일"))
+        
 
     def insert_data(self, param):
         global data_params
