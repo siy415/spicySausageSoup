@@ -14,10 +14,10 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 # import graphManager
+import dataAnalazer
 import jjson
 import numpy as np
 import webbrowser
-import financeData3
 import sys
 
 data_params = {
@@ -61,7 +61,6 @@ class Ui_MainWindow(object):
         self.start_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.start_dateEdit.setGeometry(QtCore.QRect(540, 31, 191, 31))
         self.start_dateEdit.setObjectName("start_dateEdit")
-        self.start_dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.start_dateEdit.setCalendarPopup(True)
         self.end_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.end_dateEdit.setGeometry(QtCore.QRect(540, 80, 191, 31))
@@ -371,8 +370,13 @@ class Ui_MainWindow(object):
 
         plt.cla()
         self.graphBox.removeWidget(self.canvas)
+
+        if self.start_dateEdit.text() != self.end_dateEdit.text() and \
+           self.code_lineEdit.text() != "":
+            param = dataAnalazer.dataAnalyze(self.code_lineEdit.text(), self.start_dateEdit.text(), self.end_dateEdit.text())
+            print(param)
             
-        self.plot(1, 1)
+        self.plot(param)
         
     
     def corpDoubleClickedEvent(self):
@@ -434,12 +438,18 @@ class Ui_MainWindow(object):
                 self.detailCorp.setVerticalHeaderItem(i, item)
                 self.detailCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(param[lparam[i]]))
                 self.detailCorp.setCurrentCell(i, 0)
-                if lparam[i] == "홈페이지":
-                    cell = self.detailCorp.currentItem()
+                cell = self.detailCorp.currentItem()
+                if lparam[i] == "홈페이지" and cell.text() != "-":
                     cell.setForeground(QtGui.QBrush(QtCore.Qt.blue))
                     font = QtGui.QFont()
                     font.setUnderline(True)
                     cell.setFont(font)
+                else:
+                    cell.setForeground(QtGui.QBrush(QtCore.Qt.black))
+                    font = QtGui.QFont()
+                    font.setUnderline(False)
+                    cell.setFont(font)
+
 
         return 0
 
@@ -466,18 +476,19 @@ class Ui_MainWindow(object):
 
         self.pgBarSearch.setValue(0)
 
-    def plot(self, hour ,temperature):
+    def plot(self, param=None):
         #data, blShow = graphManager.getData()
         #self.ax = self.fig.add_subplot(111)
         #self.ax.plot(data.iloc[:, blShow])
 
         #x_label_list = ['월', '화', '수', '목', '금']
+
         x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
         bar_width = 0.2
         bar_height = 1
         index = np.arange(len(x_label_list))
 
-        if hour == 0 and temperature == 0:
+        if not param:
             up_data = [0, 0, 0, 0, 0]
             down_data = [0, 0, 0, 0, 0]
             eq_data = [0, 0, 0, 0, 0]
