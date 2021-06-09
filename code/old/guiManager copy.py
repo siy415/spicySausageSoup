@@ -5,12 +5,15 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+from datetime import timedelta
 from inspect import getsourcefile
 from PyQt5 import QtCore, QtGui, QtWidgets
 # from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import matplotlib.ticker as ticker
 from typing import Dict, List
+import datetime
+from datetime import date, timedelta
 import matplotlib
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -23,6 +26,7 @@ import numpy as np
 import pandas as pd
 import webbrowser
 import sys
+
 
 
 
@@ -70,8 +74,12 @@ class Ui_MainWindow(object):
         self.start_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.start_dateEdit.setGeometry(QtCore.QRect(480, 31, 191, 31))
         self.start_dateEdit.setObjectName("start_dateEdit")
+<<<<<<< HEAD
         self.timeVal = QtCore.QDateTime.currentDateTime()
         self.start_dateEdit.setDateTime(self.timeVal.addYears(-1))
+=======
+        self.start_dateEdit.setDate(date.today() - timedelta(7))
+>>>>>>> 6416fbb16f12f0f778b2ae6c0010ce4aab837eeb
         self.start_dateEdit.setCalendarPopup(True)
         self.end_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.end_dateEdit.setGeometry(QtCore.QRect(480, 80, 191, 31))
@@ -565,7 +573,11 @@ class Ui_MainWindow(object):
             diff_value_per = round(((diff_value / start_value) * 100), 2)
 
             buy_rcmd_date = str(param['recommend']['buy'])[1:-1].replace('\'','')
+<<<<<<< HEAD
             sell_rcmd_date = str(param['recommend']['sell'])[1:-1].replace('\'','')
+=======
+            sell_rcmd_date = str(param['recommend']['sell'])[1:-1].replace('\'','')        
+>>>>>>> 6416fbb16f12f0f778b2ae6c0010ce4aab837eeb
 
         buy_rcmd_date = buy_rcmd_date.replace('요일', '')
         sell_rcmd_date = sell_rcmd_date.replace('요일', '')
