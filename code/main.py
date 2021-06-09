@@ -21,7 +21,6 @@ def main():
     gi.setConfig(coCode=coCode, coName=coName)
     jjson.getCorpCode()
 
-    gi.plot();
     gi.insert_data(guiManager.data_params)
 
     MainWindow.show()
