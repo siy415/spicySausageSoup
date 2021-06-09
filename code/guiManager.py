@@ -9,6 +9,7 @@ from inspect import getsourcefile
 from PyQt5 import QtCore, QtGui, QtWidgets
 # from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from typing import Dict, List
 import matplotlib
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -19,6 +20,8 @@ import jjson
 import numpy as np
 import webbrowser
 import sys
+
+
 
 data_params = {
     'len': int,
@@ -42,6 +45,7 @@ class Ui_MainWindow(object):
         self.code_lineEdit = QtWidgets.QLineEdit(self.main_tab)
         self.code_lineEdit.setGeometry(QtCore.QRect(160, 30, 191, 31))
         self.code_lineEdit.setObjectName("code_lineEdit")
+        self.code_lineEdit.returnPressed.connect(self.mainSearchBtnClickedEvent)
         self.codelabel = QtWidgets.QLabel(self.main_tab)
         self.codelabel.setGeometry(QtCore.QRect(80, 30, 71, 31))
         self.codelabel.setTextFormat(QtCore.Qt.AutoText)
@@ -49,6 +53,7 @@ class Ui_MainWindow(object):
         self.name_lineEdit = QtWidgets.QLineEdit(self.main_tab)
         self.name_lineEdit.setGeometry(QtCore.QRect(160, 80, 191, 31))
         self.name_lineEdit.setObjectName("name_lineEdit")
+        self.name_lineEdit.returnPressed.connect(self.mainSearchBtnClickedEvent)
         self.namelabel = QtWidgets.QLabel(self.main_tab)
         self.namelabel.setGeometry(QtCore.QRect(80, 80, 71, 31))
         self.namelabel.setObjectName("namelabel")
@@ -61,6 +66,7 @@ class Ui_MainWindow(object):
         self.start_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.start_dateEdit.setGeometry(QtCore.QRect(540, 31, 191, 31))
         self.start_dateEdit.setObjectName("start_dateEdit")
+        self.start_dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.start_dateEdit.setCalendarPopup(True)
         self.end_dateEdit = QtWidgets.QDateEdit(self.main_tab)
         self.end_dateEdit.setGeometry(QtCore.QRect(540, 80, 191, 31))
@@ -290,38 +296,38 @@ class Ui_MainWindow(object):
         self.startdate.setText(_translate("MainWindow", "분석일자  : "))
         self.enddate.setText(_translate("MainWindow", "~            :"))
         self.mon_up_label.setText(_translate("MainWindow", "% 상승"))
-        self.mon_up_label.setGeometry(QtCore.QRect(170, 570, 56, 30))
+        self.mon_up_label.setGeometry(QtCore.QRect(160, 570, 70, 30))
         self.mon_down_label.setText(_translate("MainWindow", "% 하락"))
-        self.mon_down_label.setGeometry(QtCore.QRect(170, 600, 56, 30))
+        self.mon_down_label.setGeometry(QtCore.QRect(160, 600, 70, 30))
         self.mon_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.mon_eq_label.setGeometry(QtCore.QRect(170, 630, 56, 30))
+        self.mon_eq_label.setGeometry(QtCore.QRect(160, 630, 70, 30))
         self.tue_up_label.setText(_translate("MainWindow", "% 상승"))
-        self.tue_up_label.setGeometry(QtCore.QRect(300, 570, 56, 30))
+        self.tue_up_label.setGeometry(QtCore.QRect(290, 570, 70, 30))
         self.tue_down_label.setText(_translate("MainWindow", "% 하락"))
-        self.tue_down_label.setGeometry(QtCore.QRect(300, 600, 56, 30))
+        self.tue_down_label.setGeometry(QtCore.QRect(290, 600, 70, 30))
         self.tue_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.tue_eq_label.setGeometry(QtCore.QRect(300, 630, 56, 30))
+        self.tue_eq_label.setGeometry(QtCore.QRect(290, 630, 70, 30))
         self.wed_up_label.setText(_translate("MainWindow", "% 상승"))
-        self.wed_up_label.setGeometry(QtCore.QRect(430, 570, 56, 30))
+        self.wed_up_label.setGeometry(QtCore.QRect(420, 570, 70, 30))
         self.wed_down_label.setText(_translate("MainWindow", "% 하락"))
-        self.wed_down_label.setGeometry(QtCore.QRect(430, 600, 56, 30))
+        self.wed_down_label.setGeometry(QtCore.QRect(420, 600, 70, 30))
         self.wed_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.wed_eq_label.setGeometry(QtCore.QRect(430, 630, 56, 30))
+        self.wed_eq_label.setGeometry(QtCore.QRect(420, 630, 70, 30))
         self.thu_up_label.setText(_translate("MainWindow", "% 상승"))
-        self.thu_up_label.setGeometry(QtCore.QRect(560, 570, 56, 30))
+        self.thu_up_label.setGeometry(QtCore.QRect(550, 570, 70, 30))
         self.thu_down_label.setText(_translate("MainWindow", "% 하락"))
-        self.thu_down_label.setGeometry(QtCore.QRect(560, 600, 56, 30))
+        self.thu_down_label.setGeometry(QtCore.QRect(550, 600, 70, 30))
         self.thu_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.thu_eq_label.setGeometry(QtCore.QRect(560, 630, 56, 30))
+        self.thu_eq_label.setGeometry(QtCore.QRect(550, 630, 70, 30))
         self.fri_up_label.setText(_translate("MainWindow", "% 상승"))
-        self.fri_up_label.setGeometry(QtCore.QRect(690, 570, 56, 30))
+        self.fri_up_label.setGeometry(QtCore.QRect(680, 570, 70, 30))
         self.fri_down_label.setText(_translate("MainWindow", "% 하락"))
-        self.fri_down_label.setGeometry(QtCore.QRect(690, 600, 56, 30))
+        self.fri_down_label.setGeometry(QtCore.QRect(680, 600, 70, 30))
         self.fri_eq_label.setText(_translate("MainWindow", "% 동일"))
-        self.fri_eq_label.setGeometry(QtCore.QRect(690, 630, 56, 30))
+        self.fri_eq_label.setGeometry(QtCore.QRect(680, 630, 70, 30))
         self.searchbtn.setText(_translate("MainWindow", "분석"))
         self.anal_start_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
-        self.anal_end_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
+        self.anal_end_value.setText(_translate("MainWindow", "분석 종료일 종가    :"))
         self.diff_data_label.setText(_translate("MainWindow", "시작일 대비           :"))
         self.rcmd_buy_date_label.setText(_translate("MainWindow", "매수 추천 요일       :"))
         self.rcmd_sell_date_label.setText(_translate("MainWindow", "매도 추천 요일       :"))
@@ -375,8 +381,9 @@ class Ui_MainWindow(object):
            self.code_lineEdit.text() != "":
             param = dataAnalazer.dataAnalyze(self.code_lineEdit.text(), self.start_dateEdit.text(), self.end_dateEdit.text())
             print(param)
-            
-        self.plot(param)
+            self.plot(param)
+        else:
+            self.plot()
         
     
     def corpDoubleClickedEvent(self):
@@ -477,12 +484,6 @@ class Ui_MainWindow(object):
         self.pgBarSearch.setValue(0)
 
     def plot(self, param=None):
-        #data, blShow = graphManager.getData()
-        #self.ax = self.fig.add_subplot(111)
-        #self.ax.plot(data.iloc[:, blShow])
-
-        #x_label_list = ['월', '화', '수', '목', '금']
-
         x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
         bar_width = 0.2
         bar_height = 1
@@ -493,26 +494,43 @@ class Ui_MainWindow(object):
             down_data = [0, 0, 0, 0, 0]
             eq_data = [0, 0, 0, 0, 0]
 
-        elif self.code_lineEdit.text() == "삼성":
-            up_data = [120, 140, 130, 150, 115]
-            down_data = [130, 150, 120, 110, 120]
-            eq_data = [110, 130, 145, 115, 125]
+            start_value = 0
+            end_value = 0
+            diff_value = 0
+            diff_value_per = 0
+            diff_value_txt = ""
 
-        elif self.code_lineEdit.text() == "현대":
-            up_data = [220, 240, 230, 250, 215]
-            down_data = [230, 250, 220, 210, 220]
-            eq_data = [210, 230, 245, 215, 225]
-
-        elif self.code_lineEdit.text() == "LG":
-            up_data = [320, 340, 330, 350, 315]
-            down_data = [330, 350, 320, 310, 320]
-            eq_data = [310, 330, 345, 315, 325]
-
+            sell_rcmd_date = ""
+            buy_rcmd_date = ""
         else:
-            up_data = [20, 40, 30, 50, 15]
-            down_data = [30, 50, 20, 10, 120]
-            eq_data = [10, 30, 45, 15, 25]
-        
+            up_data = [param['stockData'][0]['upval'], param['stockData'][1]['upval'], param['stockData'][2]['upval'], param['stockData'][3]['upval'], param['stockData'][4]['upval']]
+            down_data = [param['stockData'][0]['downval'], param['stockData'][1]['downval'], param['stockData'][2]['downval'], param['stockData'][3]['downval'], param['stockData'][4]['downval']]
+            eq_data = [param['stockData'][0]['sameval'], param['stockData'][1]['sameval'], param['stockData'][2]['sameval'], param['stockData'][3]['sameval'], param['stockData'][4]['sameval']]
+
+            start_value = param['start_val']
+            end_value = param['end_val']
+
+            if start_value > end_value:    
+                diff_value = start_value - end_value
+                diff_value_txt = "% 하락"
+            else:
+                diff_value = end_value - start_value
+                diff_value_txt = "% 상승"
+            
+            diff_value_per = round(((diff_value / start_value) * 100), 2)
+
+        buy_rcmd_date = str(param['recommend']['buy'])[1:-1].replace('\'','')
+        sell_rcmd_date = str(param['recommend']['sell'])[1:-1].replace('\'','')
+
+        buy_rcmd_date = buy_rcmd_date.replace('요일', '')
+        sell_rcmd_date = sell_rcmd_date.replace('요일', '')
+
+        self.anal_start_val_edit.setText(str(start_value) + " 원")
+        self.anal_end_val_edit.setText(str(end_value) + " 원")
+        self.diff_data_edit.setText(str(diff_value) + " 원, " + str(diff_value_per) + diff_value_txt)
+        self.rcmd_buy_date_edit.setText(buy_rcmd_date)
+        self.rcmd_sell_date_edit.setText(sell_rcmd_date)
+
         self.ax.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
         self.ax.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
         self.ax.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
@@ -521,7 +539,7 @@ class Ui_MainWindow(object):
         
         plt.xticks(index + bar_width + 0.1, x_label_list)
 
-        y_max = plt.ylim()[1] + 100
+        y_max = plt.ylim()[1] + 25
         plt.ylim([0, y_max])
 
         self.setLabel(up_data, down_data, eq_data)
