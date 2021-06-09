@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>911</width>
-    <height>979</height>
+    <height>991</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="main_tab">
        <attribute name="title">
@@ -27,7 +27,7 @@
        <widget class="QLineEdit" name="code_lineEdit">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>120</x>
           <y>30</y>
           <width>191</width>
           <height>31</height>
@@ -37,7 +37,7 @@
        <widget class="QLabel" name="codelabel">
         <property name="geometry">
          <rect>
-          <x>80</x>
+          <x>40</x>
           <y>30</y>
           <width>71</width>
           <height>31</height>
@@ -53,7 +53,7 @@
        <widget class="QLineEdit" name="name_lineEdit">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>120</x>
           <y>80</y>
           <width>191</width>
           <height>31</height>
@@ -63,7 +63,7 @@
        <widget class="QLabel" name="namelabel">
         <property name="geometry">
          <rect>
-          <x>80</x>
+          <x>40</x>
           <y>80</y>
           <width>71</width>
           <height>31</height>
@@ -76,7 +76,7 @@
        <widget class="QLabel" name="startdate">
         <property name="geometry">
          <rect>
-          <x>460</x>
+          <x>400</x>
           <y>30</y>
           <width>71</width>
           <height>31</height>
@@ -89,20 +89,23 @@
        <widget class="QLabel" name="enddate">
         <property name="geometry">
          <rect>
-          <x>460</x>
+          <x>400</x>
           <y>80</y>
           <width>71</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>~            :</string>
+         <string>~    :</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QDateEdit" name="start_dateEdit">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>480</x>
           <y>31</y>
           <width>191</width>
           <height>31</height>
@@ -112,44 +115,60 @@
        <widget class="QDateEdit" name="end_dateEdit">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>480</x>
           <y>80</y>
           <width>191</width>
           <height>31</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="mon_up_label">
+       <widget class="QPushButton" name="srhCode_pushButton">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>570</y>
-          <width>56</width>
-          <height>30</height>
+          <x>320</x>
+          <y>30</y>
+          <width>61</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>% 상승</string>
+         <string>찾기</string>
         </property>
        </widget>
-       <widget class="QLabel" name="mon_down_label">
+       <widget class="QPushButton" name="srhName_pushButton">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>600</y>
-          <width>56</width>
-          <height>30</height>
+          <x>320</x>
+          <y>80</y>
+          <width>61</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>% 하락</string>
+         <string>찾기</string>
         </property>
        </widget>
-       <widget class="QLabel" name="mon_eq_label">
+       <widget class="QLabel" name="anal_start_value">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>630</y>
+          <x>60</x>
+          <y>670</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>분석 시작일 종가    :</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="fri_eq_label">
+        <property name="geometry">
+         <rect>
+          <x>690</x>
+          <y>610</y>
           <width>56</width>
           <height>30</height>
          </rect>
@@ -162,124 +181,7 @@
         <property name="geometry">
          <rect>
           <x>200</x>
-          <y>630</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 동일</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="tue_down_label">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>600</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 하락</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="tue_up_label">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>570</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 상승</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="wed_up_label">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>570</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 상승</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="wed_eq_label">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>630</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 동일</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="wed_down_label">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>600</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 하락</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="thu_down_label">
-        <property name="geometry">
-         <rect>
-          <x>530</x>
-          <y>600</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 하락</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="thu_up_label">
-        <property name="geometry">
-         <rect>
-          <x>530</x>
-          <y>570</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 상승</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="thu_eq_label">
-        <property name="geometry">
-         <rect>
-          <x>530</x>
-          <y>630</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 동일</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="fri_eq_label">
-        <property name="geometry">
-         <rect>
-          <x>690</x>
-          <y>630</y>
+          <y>610</y>
           <width>56</width>
           <height>30</height>
          </rect>
@@ -292,7 +194,7 @@
         <property name="geometry">
          <rect>
           <x>690</x>
-          <y>570</y>
+          <y>550</y>
           <width>56</width>
           <height>30</height>
          </rect>
@@ -301,90 +203,12 @@
          <string>% 상승</string>
         </property>
        </widget>
-       <widget class="QLabel" name="fri_down_label">
-        <property name="geometry">
-         <rect>
-          <x>690</x>
-          <y>600</y>
-          <width>56</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>% 하락</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="searchbtn">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>150</y>
-          <width>501</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>분석</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="anal_start_val_edit">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>690</y>
-          <width>191</width>
-          <height>31</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="anal_start_value">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>690</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>분석 시작일 종가    :</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::AutoText</enum>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="anal_end_val_edit">
+       <widget class="QLineEdit" name="rcmd_sell_date_edit">
         <property name="geometry">
          <rect>
           <x>550</x>
-          <y>690</y>
+          <y>790</y>
           <width>191</width>
-          <height>31</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="anal_end_value">
-        <property name="geometry">
-         <rect>
-          <x>420</x>
-          <y>690</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>분석 시작일 종가    :</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::AutoText</enum>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="diff_data_edit">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>740</y>
-          <width>551</width>
           <height>31</height>
          </rect>
         </property>
@@ -393,7 +217,7 @@
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>740</y>
+          <y>720</y>
           <width>121</width>
           <height>31</height>
          </rect>
@@ -405,21 +229,86 @@
          <enum>Qt::AutoText</enum>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rcmd_buy_date_edit">
+       <widget class="QLineEdit" name="diff_data_edit">
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>810</y>
-          <width>191</width>
+          <y>720</y>
+          <width>551</width>
           <height>31</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="mon_eq_label">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>610</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 동일</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="wed_up_label">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>550</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 상승</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="mon_down_label">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>580</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 하락</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="mon_up_label">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>550</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 상승</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="thu_down_label">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>580</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 하락</string>
         </property>
        </widget>
        <widget class="QLabel" name="rcmd_buy_date_label">
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>810</y>
+          <y>790</y>
           <width>121</width>
           <height>31</height>
          </rect>
@@ -431,11 +320,37 @@
          <enum>Qt::AutoText</enum>
         </property>
        </widget>
+       <widget class="QLineEdit" name="anal_end_val_edit">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>670</y>
+          <width>191</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="anal_end_value">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>670</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>분석 시작일 종가    :</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+       </widget>
        <widget class="QLabel" name="rcmd_sell_date_label">
         <property name="geometry">
          <rect>
           <x>420</x>
-          <y>810</y>
+          <y>790</y>
           <width>121</width>
           <height>31</height>
          </rect>
@@ -447,26 +362,166 @@
          <enum>Qt::AutoText</enum>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rcmd_sell_date_edit">
+       <widget class="QLabel" name="tue_up_label">
         <property name="geometry">
          <rect>
-          <x>550</x>
-          <y>810</y>
-          <width>191</width>
-          <height>31</height>
+          <x>200</x>
+          <y>550</y>
+          <width>56</width>
+          <height>30</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>% 상승</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="searchbtn">
+        <property name="geometry">
+         <rect>
+          <x>690</x>
+          <y>30</y>
+          <width>171</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>분석</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="wed_eq_label">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>610</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 동일</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="fri_down_label">
+        <property name="geometry">
+         <rect>
+          <x>690</x>
+          <y>580</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 하락</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="tue_down_label">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>580</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 하락</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="wed_down_label">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>580</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 하락</string>
         </property>
        </widget>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>9</x>
-          <y>199</y>
+          <x>10</x>
+          <y>170</y>
           <width>861</width>
-          <height>361</height>
+          <height>381</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout"/>
+       </widget>
+       <widget class="QLineEdit" name="rcmd_buy_date_edit">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>790</y>
+          <width>191</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="thu_up_label">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>550</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 상승</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="anal_start_val_edit">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>670</y>
+          <width>191</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="thu_eq_label">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>610</y>
+          <width>56</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>% 동일</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="stick_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>140</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>요일별 등하락</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="line_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>140</y>
+          <width>130</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>주가 추세선</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="list_tab">

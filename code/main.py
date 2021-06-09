@@ -20,7 +20,6 @@ def main():
     gi.setupUi(MainWindow)
     gi.setConfig(coCode=coCode, coName=coName)
     jjson.getCorpCode()
-
     gi.insert_data(guiManager.data_params)
 
     MainWindow.show()
