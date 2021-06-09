@@ -5,24 +5,25 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+from datetime import timedelta
 from inspect import getsourcefile
 from PyQt5 import QtCore, QtGui, QtWidgets
 # from pyqtgraph import PlotWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-import matplotlib.ticker as ticker
 from typing import Dict, List
+import datetime
+from datetime import date, timedelta
 import matplotlib
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import readFinanceData
 # import graphManager
 import dataAnalazer
 import jjson
 import numpy as np
-import pandas as pd
 import webbrowser
 import sys
+
 
 
 
@@ -36,7 +37,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(911, 991)
+        MainWindow.resize(911, 979)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -46,157 +47,135 @@ class Ui_MainWindow(object):
         self.main_tab = QtWidgets.QWidget()
         self.main_tab.setObjectName("main_tab")
         self.code_lineEdit = QtWidgets.QLineEdit(self.main_tab)
-        self.code_lineEdit.setGeometry(QtCore.QRect(100, 30, 191, 31))
+        self.code_lineEdit.setGeometry(QtCore.QRect(160, 30, 191, 31))
         self.code_lineEdit.setObjectName("code_lineEdit")
-        self.code_lineEdit.returnPressed.connect(self.srcByCodeEvent)
+        self.code_lineEdit.returnPressed.connect(self.mainSearchBtnClickedEvent)
         self.codelabel = QtWidgets.QLabel(self.main_tab)
-        self.codelabel.setGeometry(QtCore.QRect(20, 30, 71, 31))
+        self.codelabel.setGeometry(QtCore.QRect(80, 30, 71, 31))
         self.codelabel.setTextFormat(QtCore.Qt.AutoText)
         self.codelabel.setObjectName("codelabel")
         self.name_lineEdit = QtWidgets.QLineEdit(self.main_tab)
-        self.name_lineEdit.setGeometry(QtCore.QRect(100, 80, 191, 31))
+        self.name_lineEdit.setGeometry(QtCore.QRect(160, 80, 191, 31))
         self.name_lineEdit.setObjectName("name_lineEdit")
-        self.name_lineEdit.returnPressed.connect(self.srcByNameEvent)
+        self.name_lineEdit.returnPressed.connect(self.mainSearchBtnClickedEvent)
         self.namelabel = QtWidgets.QLabel(self.main_tab)
-        self.namelabel.setGeometry(QtCore.QRect(20, 80, 71, 31))
+        self.namelabel.setGeometry(QtCore.QRect(80, 80, 71, 31))
         self.namelabel.setObjectName("namelabel")
         self.startdate = QtWidgets.QLabel(self.main_tab)
-        self.startdate.setGeometry(QtCore.QRect(400, 30, 71, 31))
+        self.startdate.setGeometry(QtCore.QRect(460, 30, 71, 31))
         self.startdate.setObjectName("startdate")
         self.enddate = QtWidgets.QLabel(self.main_tab)
-        self.enddate.setGeometry(QtCore.QRect(400, 80, 71, 31))
-        self.enddate.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.enddate.setGeometry(QtCore.QRect(460, 80, 71, 31))
         self.enddate.setObjectName("enddate")
         self.start_dateEdit = QtWidgets.QDateEdit(self.main_tab)
-        self.start_dateEdit.setGeometry(QtCore.QRect(480, 31, 191, 31))
+        self.start_dateEdit.setGeometry(QtCore.QRect(540, 31, 191, 31))
         self.start_dateEdit.setObjectName("start_dateEdit")
-        self.timeVal = QtCore.QDateTime.currentDateTime()
-        self.start_dateEdit.setDateTime(self.timeVal.addYears(-1))
+        self.start_dateEdit.setDate(date.today() - timedelta(7))
         self.start_dateEdit.setCalendarPopup(True)
         self.end_dateEdit = QtWidgets.QDateEdit(self.main_tab)
-        self.end_dateEdit.setGeometry(QtCore.QRect(480, 80, 191, 31))
+        self.end_dateEdit.setGeometry(QtCore.QRect(540, 80, 191, 31))
         self.end_dateEdit.setObjectName("end_dateEdit")
         self.end_dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.end_dateEdit.setCalendarPopup(True)
-        self.srhCode_pushButton = QtWidgets.QPushButton(self.main_tab)
-        self.srhCode_pushButton.setGeometry(QtCore.QRect(300, 30, 61, 31))
-        self.srhCode_pushButton.setObjectName("srhCode_pushButton")
-        self.srhCode_pushButton.clicked.connect(self.srcByCodeEvent)
-        self.srhName_pushButton = QtWidgets.QPushButton(self.main_tab)
-        self.srhName_pushButton.setGeometry(QtCore.QRect(300, 80, 61, 31))
-        self.srhName_pushButton.setObjectName("srhName_pushButton")
-        self.srhName_pushButton.clicked.connect(self.srcByNameEvent)
+        self.mon_up_label = QtWidgets.QLabel(self.main_tab)
+        self.mon_up_label.setGeometry(QtCore.QRect(50, 570, 56, 30))
+        self.mon_up_label.setObjectName("mon_up_label")
+        self.mon_down_label = QtWidgets.QLabel(self.main_tab)
+        self.mon_down_label.setGeometry(QtCore.QRect(50, 600, 56, 30))
+        self.mon_down_label.setObjectName("mon_down_label")
+        self.mon_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.mon_eq_label.setGeometry(QtCore.QRect(50, 630, 56, 30))
+        self.mon_eq_label.setObjectName("mon_eq_label")
+        self.tue_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.tue_eq_label.setGeometry(QtCore.QRect(200, 630, 56, 30))
+        self.tue_eq_label.setObjectName("tue_eq_label")
+        self.tue_down_label = QtWidgets.QLabel(self.main_tab)
+        self.tue_down_label.setGeometry(QtCore.QRect(200, 600, 56, 30))
+        self.tue_down_label.setObjectName("tue_down_label")
+        self.tue_up_label = QtWidgets.QLabel(self.main_tab)
+        self.tue_up_label.setGeometry(QtCore.QRect(200, 570, 56, 30))
+        self.tue_up_label.setObjectName("tue_up_label")
+        self.wed_up_label = QtWidgets.QLabel(self.main_tab)
+        self.wed_up_label.setGeometry(QtCore.QRect(370, 570, 56, 30))
+        self.wed_up_label.setObjectName("wed_up_label")
+        self.wed_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.wed_eq_label.setGeometry(QtCore.QRect(370, 630, 56, 30))
+        self.wed_eq_label.setObjectName("wed_eq_label")
+        self.wed_down_label = QtWidgets.QLabel(self.main_tab)
+        self.wed_down_label.setGeometry(QtCore.QRect(370, 600, 56, 30))
+        self.wed_down_label.setObjectName("wed_down_label")
+        self.thu_down_label = QtWidgets.QLabel(self.main_tab)
+        self.thu_down_label.setGeometry(QtCore.QRect(530, 600, 56, 30))
+        self.thu_down_label.setObjectName("thu_down_label")
+        self.thu_up_label = QtWidgets.QLabel(self.main_tab)
+        self.thu_up_label.setGeometry(QtCore.QRect(530, 570, 56, 30))
+        self.thu_up_label.setObjectName("thu_up_label")
+        self.thu_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.thu_eq_label.setGeometry(QtCore.QRect(530, 630, 56, 30))
+        self.thu_eq_label.setObjectName("thu_eq_label")
+        self.fri_eq_label = QtWidgets.QLabel(self.main_tab)
+        self.fri_eq_label.setGeometry(QtCore.QRect(690, 630, 56, 30))
+        self.fri_eq_label.setObjectName("fri_eq_label")
+        self.fri_up_label = QtWidgets.QLabel(self.main_tab)
+        self.fri_up_label.setGeometry(QtCore.QRect(690, 570, 56, 30))
+        self.fri_up_label.setObjectName("fri_up_label")
+        self.fri_down_label = QtWidgets.QLabel(self.main_tab)
+        self.fri_down_label.setGeometry(QtCore.QRect(690, 600, 56, 30))
+        self.fri_down_label.setObjectName("fri_down_label")
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.main_tab)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 199, 861, 361))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        # add graph Box by inyong shim
+        self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.graphBox.addWidget(self.canvas)
+        self.canvas.draw()
+
+        self.searchbtn = QtWidgets.QPushButton(self.main_tab)
+        self.searchbtn.setGeometry(QtCore.QRect(180, 150, 501, 41))
+        self.searchbtn.setObjectName("searchbtn")
+        self.searchbtn.clicked.connect(self.mainSearchBtnClickedEvent)
+        self.anal_start_val_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.anal_start_val_edit.setGeometry(QtCore.QRect(190, 690, 191, 31))
+        self.anal_start_val_edit.setObjectName("anal_start_val_edit")
+        self.anal_start_val_edit.setReadOnly(True)
         self.anal_start_value = QtWidgets.QLabel(self.main_tab)
-        self.anal_start_value.setGeometry(QtCore.QRect(60, 670, 121, 31))
+        self.anal_start_value.setGeometry(QtCore.QRect(60, 690, 121, 31))
         self.anal_start_value.setTextFormat(QtCore.Qt.AutoText)
         self.anal_start_value.setObjectName("anal_start_value")
-        self.fri_eq_label = QtWidgets.QLabel(self.main_tab)
-        self.fri_eq_label.setGeometry(QtCore.QRect(690, 610, 80, 30))
-        self.fri_eq_label.setObjectName("fri_eq_label")
-        self.tue_eq_label = QtWidgets.QLabel(self.main_tab)
-        self.tue_eq_label.setGeometry(QtCore.QRect(200, 610, 80, 30))
-        self.tue_eq_label.setObjectName("tue_eq_label")
-        self.fri_up_label = QtWidgets.QLabel(self.main_tab)
-        self.fri_up_label.setGeometry(QtCore.QRect(690, 550, 80, 30))
-        self.fri_up_label.setObjectName("fri_up_label")
-        self.rcmd_sell_date_edit = QtWidgets.QLineEdit(self.main_tab)
-        self.rcmd_sell_date_edit.setGeometry(QtCore.QRect(550, 790, 191, 31))
-        self.rcmd_sell_date_edit.setObjectName("rcmd_sell_date_edit")
-        self.rcmd_sell_date_edit.setReadOnly(True)
-        self.diff_data_label = QtWidgets.QLabel(self.main_tab)
-        self.diff_data_label.setGeometry(QtCore.QRect(60, 720, 121, 31))
-        self.diff_data_label.setTextFormat(QtCore.Qt.AutoText)
-        self.diff_data_label.setObjectName("diff_data_label")
-        self.diff_data_edit = QtWidgets.QLineEdit(self.main_tab)
-        self.diff_data_edit.setGeometry(QtCore.QRect(190, 720, 551, 31))
-        self.diff_data_edit.setObjectName("diff_data_edit")
-        self.diff_data_edit.setReadOnly(True)
-        self.mon_eq_label = QtWidgets.QLabel(self.main_tab)
-        self.mon_eq_label.setGeometry(QtCore.QRect(50, 610, 80, 30))
-        self.mon_eq_label.setObjectName("mon_eq_label")
-        self.wed_up_label = QtWidgets.QLabel(self.main_tab)
-        self.wed_up_label.setGeometry(QtCore.QRect(370, 550, 80, 30))
-        self.wed_up_label.setObjectName("wed_up_label")
-        self.mon_down_label = QtWidgets.QLabel(self.main_tab)
-        self.mon_down_label.setGeometry(QtCore.QRect(50, 580, 80, 30))
-        self.mon_down_label.setObjectName("mon_down_label")
-        self.mon_up_label = QtWidgets.QLabel(self.main_tab)
-        self.mon_up_label.setGeometry(QtCore.QRect(50, 550, 80, 30))
-        self.mon_up_label.setObjectName("mon_up_label")
-        self.thu_down_label = QtWidgets.QLabel(self.main_tab)
-        self.thu_down_label.setGeometry(QtCore.QRect(530, 580, 80, 30))
-        self.thu_down_label.setObjectName("thu_down_label")
-        self.rcmd_buy_date_label = QtWidgets.QLabel(self.main_tab)
-        self.rcmd_buy_date_label.setGeometry(QtCore.QRect(60, 790, 121, 31))
-        self.rcmd_buy_date_label.setTextFormat(QtCore.Qt.AutoText)
-        self.rcmd_buy_date_label.setObjectName("rcmd_buy_date_label")
         self.anal_end_val_edit = QtWidgets.QLineEdit(self.main_tab)
-        self.anal_end_val_edit.setGeometry(QtCore.QRect(550, 670, 191, 31))
+        self.anal_end_val_edit.setGeometry(QtCore.QRect(550, 690, 191, 31))
         self.anal_end_val_edit.setObjectName("anal_end_val_edit")
         self.anal_end_val_edit.setReadOnly(True)
         self.anal_end_value = QtWidgets.QLabel(self.main_tab)
-        self.anal_end_value.setGeometry(QtCore.QRect(420, 670, 121, 31))
+        self.anal_end_value.setGeometry(QtCore.QRect(420, 690, 121, 31))
         self.anal_end_value.setTextFormat(QtCore.Qt.AutoText)
         self.anal_end_value.setObjectName("anal_end_value")
-        self.rcmd_sell_date_label = QtWidgets.QLabel(self.main_tab)
-        self.rcmd_sell_date_label.setGeometry(QtCore.QRect(420, 790, 121, 31))
-        self.rcmd_sell_date_label.setTextFormat(QtCore.Qt.AutoText)
-        self.rcmd_sell_date_label.setObjectName("rcmd_sell_date_label")
-        self.tue_up_label = QtWidgets.QLabel(self.main_tab)
-        self.tue_up_label.setGeometry(QtCore.QRect(200, 550, 80, 30))
-        self.tue_up_label.setObjectName("tue_up_label")
-        self.searchbtn = QtWidgets.QPushButton(self.main_tab)
-        self.searchbtn.setGeometry(QtCore.QRect(690, 30, 171, 81))
-        self.searchbtn.setObjectName("searchbtn")
-        self.searchbtn.clicked.connect(self.mainSearchBtnClickedEvent)        
-        self.wed_eq_label = QtWidgets.QLabel(self.main_tab)
-        self.wed_eq_label.setGeometry(QtCore.QRect(370, 610, 80, 30))
-        self.wed_eq_label.setObjectName("wed_eq_label")
-        self.fri_down_label = QtWidgets.QLabel(self.main_tab)
-        self.fri_down_label.setGeometry(QtCore.QRect(690, 580, 80, 30))
-        self.fri_down_label.setObjectName("fri_down_label")
-        self.tue_down_label = QtWidgets.QLabel(self.main_tab)
-        self.tue_down_label.setGeometry(QtCore.QRect(200, 580, 80, 30))
-        self.tue_down_label.setObjectName("tue_down_label")
-        self.wed_down_label = QtWidgets.QLabel(self.main_tab)
-        self.wed_down_label.setGeometry(QtCore.QRect(370, 580, 80, 30))
-        self.wed_down_label.setObjectName("wed_down_label")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.main_tab)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 170, 861, 381))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.diff_data_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.diff_data_edit.setGeometry(QtCore.QRect(190, 740, 551, 31))
+        self.diff_data_edit.setObjectName("diff_data_edit")
+        self.diff_data_edit.setReadOnly(True)
+        self.diff_data_label = QtWidgets.QLabel(self.main_tab)
+        self.diff_data_label.setGeometry(QtCore.QRect(60, 740, 121, 31))
+        self.diff_data_label.setTextFormat(QtCore.Qt.AutoText)
+        self.diff_data_label.setObjectName("diff_data_label")
         self.rcmd_buy_date_edit = QtWidgets.QLineEdit(self.main_tab)
-        self.rcmd_buy_date_edit.setGeometry(QtCore.QRect(190, 790, 191, 31))
+        self.rcmd_buy_date_edit.setGeometry(QtCore.QRect(190, 810, 191, 31))
         self.rcmd_buy_date_edit.setObjectName("rcmd_buy_date_edit")
         self.rcmd_buy_date_edit.setReadOnly(True)
-        self.thu_up_label = QtWidgets.QLabel(self.main_tab)
-        self.thu_up_label.setGeometry(QtCore.QRect(530, 550, 80, 30))
-        self.thu_up_label.setObjectName("thu_up_label")
-        self.anal_start_val_edit = QtWidgets.QLineEdit(self.main_tab)
-        self.anal_start_val_edit.setGeometry(QtCore.QRect(190, 670, 191, 31))
-        self.anal_start_val_edit.setObjectName("anal_start_val_edit")
-        self.anal_start_val_edit.setReadOnly(True)
-        self.thu_eq_label = QtWidgets.QLabel(self.main_tab)
-        self.thu_eq_label.setGeometry(QtCore.QRect(530, 610, 80, 30))
-        self.thu_eq_label.setObjectName("thu_eq_label")
-
-
-        # add graph Box by inyong shim
-        self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.figStick, self.axStick = plt.subplots()
-        self.canvasStick = FigureCanvasQTAgg(self.figStick)
-        #plt.tight_layout()
-        #self.canvasStick.draw()
-        #self.graphBox.addWidget(self.canvasStick)
-
-
-        self.stick_radioButton = QtWidgets.QRadioButton(self.main_tab)
-        self.stick_radioButton.setGeometry(QtCore.QRect(30, 140, 151, 22))
-        self.stick_radioButton.setObjectName("stick_radioButton")
-        self.stick_radioButton.clicked.connect(self.radioClickedEvent)
-        self.line_radioButton = QtWidgets.QRadioButton(self.main_tab)
-        self.line_radioButton.setGeometry(QtCore.QRect(190, 140, 130, 22))
-        self.line_radioButton.setObjectName("line_radioButton")
-        self.line_radioButton.clicked.connect(self.radioClickedEvent)
+        self.rcmd_buy_date_label = QtWidgets.QLabel(self.main_tab)
+        self.rcmd_buy_date_label.setGeometry(QtCore.QRect(60, 810, 121, 31))
+        self.rcmd_buy_date_label.setTextFormat(QtCore.Qt.AutoText)
+        self.rcmd_buy_date_label.setObjectName("rcmd_buy_date_label")
+        self.rcmd_sell_date_label = QtWidgets.QLabel(self.main_tab)
+        self.rcmd_sell_date_label.setGeometry(QtCore.QRect(420, 810, 121, 31))
+        self.rcmd_sell_date_label.setTextFormat(QtCore.Qt.AutoText)
+        self.rcmd_sell_date_label.setObjectName("rcmd_sell_date_label")
+        self.rcmd_sell_date_edit = QtWidgets.QLineEdit(self.main_tab)
+        self.rcmd_sell_date_edit.setGeometry(QtCore.QRect(550, 810, 191, 31))
+        self.rcmd_sell_date_edit.setObjectName("rcmd_sell_date_edit")
+        self.rcmd_sell_date_edit.setReadOnly(True)
         self.tabWidget.addTab(self.main_tab, "")
         self.list_tab = QtWidgets.QWidget()
         self.list_tab.setObjectName("list_tab")
@@ -309,7 +288,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusBar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
 
@@ -319,15 +298,7 @@ class Ui_MainWindow(object):
         self.codelabel.setText(_translate("MainWindow", "종목코드  : "))
         self.namelabel.setText(_translate("MainWindow", "종목명     : "))
         self.startdate.setText(_translate("MainWindow", "분석일자  : "))
-        self.enddate.setText(_translate("MainWindow", "~    :"))
-        self.srhCode_pushButton.setText(_translate("MainWindow", "찾기"))
-        self.srhName_pushButton.setText(_translate("MainWindow", "찾기"))
-        self.anal_start_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
-        self.diff_data_label.setText(_translate("MainWindow", "시작일 대비           :"))
-        self.rcmd_buy_date_label.setText(_translate("MainWindow", "매수 추천 요일       :"))
-        self.anal_end_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
-        self.rcmd_sell_date_label.setText(_translate("MainWindow", "매도 추천 요일       :"))
-        self.searchbtn.setText(_translate("MainWindow", "분석"))
+        self.enddate.setText(_translate("MainWindow", "~            :"))
         self.mon_up_label.setText(_translate("MainWindow", "% 상승"))
         self.mon_up_label.setGeometry(QtCore.QRect(160, 570, 70, 30))
         self.mon_down_label.setText(_translate("MainWindow", "% 하락"))
@@ -358,9 +329,12 @@ class Ui_MainWindow(object):
         self.fri_down_label.setGeometry(QtCore.QRect(680, 600, 70, 30))
         self.fri_eq_label.setText(_translate("MainWindow", "% 동일"))
         self.fri_eq_label.setGeometry(QtCore.QRect(680, 630, 70, 30))
-        self.stick_radioButton.setText(_translate("MainWindow", "요일별 등하락"))
-        self.stick_radioButton.click()
-        self.line_radioButton.setText(_translate("MainWindow", "주가 추세선"))
+        self.searchbtn.setText(_translate("MainWindow", "분석"))
+        self.anal_start_value.setText(_translate("MainWindow", "분석 시작일 종가    :"))
+        self.anal_end_value.setText(_translate("MainWindow", "분석 종료일 종가    :"))
+        self.diff_data_label.setText(_translate("MainWindow", "시작일 대비           :"))
+        self.rcmd_buy_date_label.setText(_translate("MainWindow", "매수 추천 요일       :"))
+        self.rcmd_sell_date_label.setText(_translate("MainWindow", "매도 추천 요일       :"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.main_tab), _translate("MainWindow", "데이터 분석"))
         item = self.listCorp.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "종목코드"))
@@ -403,19 +377,17 @@ class Ui_MainWindow(object):
                 self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
 
     def mainSearchBtnClickedEvent(self):
+
         plt.cla()
-        self.graphBox.removeWidget(self.canvasStick)
+        self.graphBox.removeWidget(self.canvas)
 
         if self.start_dateEdit.text() != self.end_dateEdit.text() and \
            self.code_lineEdit.text() != "":
             param = dataAnalazer.dataAnalyze(self.code_lineEdit.text(), self.start_dateEdit.text(), self.end_dateEdit.text())
-            df = readFinanceData.DataReader(self.code_lineEdit.text(), self.start_dateEdit.text(), self.end_dateEdit.text())
-            #print(param)
-            #print(df)
-            if self.stick_radioButton.isChecked():
-                self.plotStick(param)
-            else:
-                self.plotLine(df)
+            print(param)
+            self.plot(param)
+        else:
+            self.plot()
         
     
     def corpDoubleClickedEvent(self):
@@ -429,10 +401,6 @@ class Ui_MainWindow(object):
         return 0
 
 
-    def radioClickedEvent(self):
-        self.mainSearchBtnClickedEvent()
-
-
     def detailCellClicked(self):
         r = self.detailCorp.currentRow()
         rHeadrer = self.detailCorp.verticalHeaderItem(r)
@@ -440,25 +408,6 @@ class Ui_MainWindow(object):
         if rHeadrer.text() == "홈페이지" and self.detailCorp.item(r, 0).text() != '-':
             webbrowser.open(self.detailCorp.currentItem().text())
 
-    
-    def srcByCodeEvent(self):
-        global data_params
-
-        lst = np.array(data_params["coCode"])
-        val = np.where(lst == self.code_lineEdit.text())[0]
-        if val >= 0:
-            self.name_lineEdit.setText(data_params["coName"][val[0]])
-            self.mainSearchBtnClickedEvent()
-
-
-    def srcByNameEvent(self):
-        global data_params
-
-        lst = np.array(data_params["coName"])
-        val = np.where(lst == self.name_lineEdit.text())[0]
-        if val:
-            self.code_lineEdit.setText(data_params["coCode"][val[0]])
-            self.mainSearchBtnClickedEvent()
 
     
     def listIdxChangedEvent(self):
@@ -520,7 +469,7 @@ class Ui_MainWindow(object):
         self.confCorpList(kwargs.items())
 
 
-    def confCorpList(self, items:  tuple):
+    def confCorpList(self, items: list):
         global data_params
 
         for key, value in items:
@@ -538,9 +487,17 @@ class Ui_MainWindow(object):
 
         self.pgBarSearch.setValue(0)
 
-    
-    def inputResult(self, param=None):
+    def plot(self, param=None):
+        x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+        bar_width = 0.2
+        bar_height = 1
+        index = np.arange(len(x_label_list))
+
         if not param:
+            up_data = [0, 0, 0, 0, 0]
+            down_data = [0, 0, 0, 0, 0]
+            eq_data = [0, 0, 0, 0, 0]
+
             start_value = 0
             end_value = 0
             diff_value = 0
@@ -549,9 +506,11 @@ class Ui_MainWindow(object):
 
             sell_rcmd_date = ""
             buy_rcmd_date = ""
-
-            return
         else:
+            up_data = [param['stockData'][0]['upval'], param['stockData'][1]['upval'], param['stockData'][2]['upval'], param['stockData'][3]['upval'], param['stockData'][4]['upval']]
+            down_data = [param['stockData'][0]['downval'], param['stockData'][1]['downval'], param['stockData'][2]['downval'], param['stockData'][3]['downval'], param['stockData'][4]['downval']]
+            eq_data = [param['stockData'][0]['sameval'], param['stockData'][1]['sameval'], param['stockData'][2]['sameval'], param['stockData'][3]['sameval'], param['stockData'][4]['sameval']]
+
             start_value = param['start_val']
             end_value = param['end_val']
 
@@ -565,7 +524,7 @@ class Ui_MainWindow(object):
             diff_value_per = round(((diff_value / start_value) * 100), 2)
 
             buy_rcmd_date = str(param['recommend']['buy'])[1:-1].replace('\'','')
-            sell_rcmd_date = str(param['recommend']['sell'])[1:-1].replace('\'','')
+            sell_rcmd_date = str(param['recommend']['sell'])[1:-1].replace('\'','')        
 
         buy_rcmd_date = buy_rcmd_date.replace('요일', '')
         sell_rcmd_date = sell_rcmd_date.replace('요일', '')
@@ -576,29 +535,11 @@ class Ui_MainWindow(object):
         self.rcmd_buy_date_edit.setText(buy_rcmd_date)
         self.rcmd_sell_date_edit.setText(sell_rcmd_date)
 
+        self.ax.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
+        self.ax.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
+        self.ax.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
 
-    def plotStick(self, param=None):
-        x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
-        bar_width = 0.2
-        bar_height = 1
-        index = np.arange(len(x_label_list))
-
-        if not param:
-            up_data = [0, 0, 0, 0, 0]
-            down_data = [0, 0, 0, 0, 0]
-            eq_data = [0, 0, 0, 0, 0]
-            return
-        else:
-            print("in")
-            up_data = [param['stockData'][0]['upval'], param['stockData'][1]['upval'], param['stockData'][2]['upval'], param['stockData'][3]['upval'], param['stockData'][4]['upval']]
-            down_data = [param['stockData'][0]['downval'], param['stockData'][1]['downval'], param['stockData'][2]['downval'], param['stockData'][3]['downval'], param['stockData'][4]['downval']]
-            eq_data = [param['stockData'][0]['sameval'], param['stockData'][1]['sameval'], param['stockData'][2]['sameval'], param['stockData'][3]['sameval'], param['stockData'][4]['sameval']]
-
-        self.axStick.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
-        self.axStick.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
-        self.axStick.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
-
-        self.axStick.legend(loc='upper right', fontsize=7.5)
+        self.ax.legend(loc='upper right', fontsize=7.5)
         
         plt.xticks(index + bar_width + 0.1, x_label_list)
 
@@ -607,10 +548,10 @@ class Ui_MainWindow(object):
 
         self.setLabel(up_data, down_data, eq_data)
 
-        self.canvasStick = FigureCanvasQTAgg(self.figStick)
-        self.canvasStick.draw()
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.canvas.draw()
 
-        self.graphBox.addWidget(self.canvasStick)
+        self.graphBox.addWidget(self.canvas)
 
 
     def setLabel(self, up, down, eq):
@@ -635,30 +576,6 @@ class Ui_MainWindow(object):
         self.fri_up_label.setText(_translate("MainWindow", str(up[4]) + "% 상승"))
         self.fri_down_label.setText(_translate("MainWindow", str(down[4]) + "% 하락"))
         self.fri_eq_label.setText(_translate("MainWindow", str(eq[4]) + "% 동일"))
-
-
-    def plotLine(self, df):
-        if len(df) > 0:
-            ma_ls = [5, 20, 60, 120]
-
-            for ma in ma_ls:
-                if ma < len(df):
-                    maClose = df['Close'].rolling(window=ma, min_periods=1).mean()
-                    df['MA' + str(ma)] = maClose
-                    self.axStick.plot_date(df["Date"], df["MA" + str(ma)], '-', label="MA" + str(ma), linewidth=1)
-            self.axStick.plot_date(df["Date"], df["Close"], '-', label="Close", linewidth=1)
-
-            plt.xlim([df["Date"][0], df["Date"][len(df)-1]])
-            self.axStick.legend(loc='upper right', fontsize=7.5)
-            self.axStick.set_ylabel(u"(Unit: Won)")
-
-            self.figStick.autofmt_xdate()
-            plt.tight_layout()
-
-            self.canvasStick = FigureCanvasQTAgg(self.figStick)
-            self.canvasStick.draw()
-            self.graphBox.addWidget(self.canvasStick)
-            # df.iloc[:, blShow].plot()
         
 
     def insert_data(self, param):
