@@ -1,16 +1,13 @@
+"""
+    Coding By Shim Inyong
+"""
 from os import path
 from inspect import currentframe, getframeinfo
-from requests.api import request
-from bs4 import BeautifulSoup
-from bs4.element import SoupStrainer
 import requests
 import zipfile, io
-import time
 import json as js
 import xml.etree.cElementTree as etree
-import xml.etree.ElementTree
-
-from requests.models import ContentDecodingError
+import datetime as dt
 
 corpCode = {}
 
@@ -21,11 +18,12 @@ urls = {
     "getCorpCode" : "corpCode.xml?",
     "getCompany" : "company.json?",
     "getEmployees" : "empSttus.json?",
+    "getStockData" : "alotMatter.json?",
+    "getCompanyFin": "fnlttSinglAcnt.json?"
 }
 
 baseData = {
     "crtfc_key" : "c32cb4b63e38456c5924c2aa0675834656df6943",
-    "corp_code" : "00126380"
 }
 
 
@@ -74,15 +72,19 @@ def getCorpCode():
 
     #print(corpCode)
 
+
 def getCompNum(stockCode: str):
     global corpCode
     res: str
 
-    # if not path.isdir("./data"):
-    if len(corpCode) == 0:
+    #if not path.isdir("./data"):
+    if len(corpCode) == 0 :
         getCorpCode()
 
-    res = corpCode[stockCode]
+    if stockCode in corpCode:
+        res = corpCode[stockCode]
+    else:
+        res = "000000"
 
     return res
 
@@ -112,7 +114,7 @@ def getCompany(compNum: str):
     3분기 : 11014
     사업  : 11011
 '''
-def getEmployees(compNum, year=time.strftime("%Y", time.localtime(time.time())), report="11013"):
+def getEmployees(compNum, year=str(dt.datetime.now().year - 1), report="11011"):
     # https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS002&apiId=2019011
     # 직원현황에 대한 파싱 예시
     dict = {
@@ -123,19 +125,45 @@ def getEmployees(compNum, year=time.strftime("%Y", time.localtime(time.time())),
 
     # 현재 실행중인 함수 명 저장
     curFunc = getframeinfo(currentframe()).function
-    url = baseUrl + urls[curFunc]
+    return apiCall(dict, curFunc)
+
+
+def getStockData(compNum, year=str(dt.datetime.now().year - 1), report="11011"):
+    dict = {
+        "corp_code" : compNum,
+        "bsns_year" : year,
+        "reprt_code" : report,
+    }
+    
+    curFunc = getframeinfo(currentframe()).function
+    return apiCall(dict, curFunc)
+
+
+def getCompanyFin(compNum, year=str(dt.datetime.now().year - 1), report="11011"):
+    dict = {
+        "corp_code" : compNum,
+        "bsns_year" : year,
+        "reprt_code" : report,
+    }
+    
+    curFunc = getframeinfo(currentframe()).function
+    return apiCall(dict, curFunc)
+
+
+def apiCall(param, func):
+    url = baseUrl + urls[func]
 
     # dict간에 합쳐줌, 필요한 dict를 합쳐서 data로 한번에 넘기기위해 사용
     data = baseData
-    data.update(dict)
-    # print(data)
+    data.update(param)
 
     r = requests.get(url, params=data)
     #print(r)
     # json 파일을 불러와서 dictionary 형태로 저장
     j = js.load(io.BytesIO(r.content))
-    print("type of j: " + str(type(j)))
+    return j
 
 
 # compNum = getCompNum("005930")
-# getEmployees(compNum)
+        
+# print(j["list"][len(j["list"])-2])

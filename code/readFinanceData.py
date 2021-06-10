@@ -1,3 +1,6 @@
+"""
+    readFinanceData by Jang Dongchan
+"""
 import re
 import requests
 import pandas as pd

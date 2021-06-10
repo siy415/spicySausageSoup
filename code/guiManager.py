@@ -18,7 +18,7 @@ import matplotlib.font_manager as fm
 import readFinanceData
 # import graphManager
 import dataAnalazer
-import jjson
+import readCompDetail
 import numpy as np
 import pandas as pd
 import webbrowser
@@ -180,15 +180,10 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
         self.thu_eq_label.setObjectName("thu_eq_label")
 
 
-        # add graph Box by inyong shim
+        # gui modified by inyong shim
         self.graphBox = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.figStick, self.axStick = plt.subplots()
         self.canvasStick = FigureCanvasQTAgg(self.figStick)
-        #plt.tight_layout()
-        #self.canvasStick.draw()
-        #self.graphBox.addWidget(self.canvasStick)
-
-
         self.stick_radioButton = QtWidgets.QRadioButton(self.main_tab)
         self.stick_radioButton.setGeometry(QtCore.QRect(30, 140, 151, 22))
         self.stick_radioButton.setObjectName("stick_radioButton")
@@ -207,7 +202,6 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listCorp.sizePolicy().hasHeightForWidth())
         self.listCorp.setSizePolicy(sizePolicy)
-        # self.listCorp.cellClicked.connect(self.listIdxChangedEvent)
         self.listCorp.currentCellChanged.connect(self.listIdxChangedEvent)
         self.listCorp.doubleClicked.connect(self.corpDoubleClickedEvent)
         palette = QtGui.QPalette()
@@ -374,34 +368,6 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.list_tab), _translate("MainWindow", "종목 LIST"))
 
 
-    def btnClickedEvent(self):
-        print("A")
-        param = {
-            "len": int,
-            "coIdx": int,
-        }
-        print(self.txtBoxName.text())
-        if self.txtBoxName.text() == "":
-            self.insert_data(data_params)
-        else:
-            #print(data_params)
-            param["len"] = 1
-            if self.comBoxProp.currentText() == "기업명":
-                print(self.txtBoxName.text())
-                if self.txtBoxName.text() in data_params["coName"]:
-                    param["coIdx"] = data_params["coName"].index(self.txtBoxName.text())
-                else:
-                    param["len"] = 0
-            else:
-                if self.txtBoxName.text() in data_params["coCode"]:
-                    param["coIdx"] = data_params["coCode"].index(self.txtBoxName.text())
-                else:
-                    param["len"] = 0
-
-            self.insert_data(param)
-            if(param["len"] > 0):
-                self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
-
     def mainSearchBtnClickedEvent(self):    # Coding by Jang Byunghun
         diff_date = self.start_dateEdit.dateTime().daysTo(self.end_dateEdit.dateTime())
 
@@ -422,127 +388,30 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
                 self.plotStick(param)
             else:
                 self.plotLine(df)
+
+
+    def setLabel(self, up, down, eq):  # Coding by Jang Byunghun
+        _translate = QtCore.QCoreApplication.translate
         
-    
-    def corpDoubleClickedEvent(self):
-        r = self.listCorp.currentRow()
+        self.mon_up_label.setText(_translate("MainWindow", str(up[0]) + "% 상승"))
+        self.mon_down_label.setText(_translate("MainWindow", str(down[0]) + "% 하락"))
+        self.mon_eq_label.setText(_translate("MainWindow", str(eq[0]) + "% 동일"))
 
-        if self.listCorp.item(r, 1).text() != "":
-            self.code_lineEdit.setText(self.listCorp.item(r, 0).text())
-            self.name_lineEdit.setText(self.listCorp.item(r, 1).text())
+        self.tue_up_label.setText(_translate("MainWindow", str(up[1]) + "% 상승"))
+        self.tue_down_label.setText(_translate("MainWindow", str(down[1]) + "% 하락"))
+        self.tue_eq_label.setText(_translate("MainWindow", str(eq[1]) + "% 동일"))
 
-            self.tabWidget.setCurrentIndex(self.tabWidget.currentIndex()-1)
-        return 0
+        self.wed_up_label.setText(_translate("MainWindow", str(up[2]) + "% 상승"))
+        self.wed_down_label.setText(_translate("MainWindow", str(down[2]) + "% 하락"))
+        self.wed_eq_label.setText(_translate("MainWindow", str(eq[2]) + "% 동일"))
 
+        self.thu_up_label.setText(_translate("MainWindow", str(up[3]) + "% 상승"))
+        self.thu_down_label.setText(_translate("MainWindow", str(down[3]) + "% 하락"))
+        self.thu_eq_label.setText(_translate("MainWindow", str(eq[3]) + "% 동일"))
 
-    def radioClickedEvent(self):
-        self.mainSearchBtnClickedEvent()
-
-
-    def detailCellClicked(self):
-        r = self.detailCorp.currentRow()
-        rHeadrer = self.detailCorp.verticalHeaderItem(r)
-
-        if rHeadrer.text() == "홈페이지" and self.detailCorp.item(r, 0).text() != '-':
-            webbrowser.open(self.detailCorp.currentItem().text())
-
-    
-    def srcByCodeEvent(self):
-        global data_params
-
-        lst = np.array(data_params["coCode"])
-        val = np.where(lst == self.code_lineEdit.text())[0]
-        if val >= 0:
-            self.name_lineEdit.setText(data_params["coName"][val[0]])
-            self.mainSearchBtnClickedEvent()
-
-
-    def srcByNameEvent(self):
-        global data_params
-
-        lst = np.array(data_params["coName"])
-        val = np.where(lst == self.name_lineEdit.text())[0]
-        if val:
-            self.code_lineEdit.setText(data_params["coCode"][val[0]])
-            self.mainSearchBtnClickedEvent()
-
-    
-    def listIdxChangedEvent(self):
-        param = {}
-        dictName = { 
-            "corp_name": "기업명", 
-            "ceo_nm"   : "대표", 
-            "adres"    : "주소",
-            "hm_url"   : "홈페이지", 
-            "phn_no"   : "전화번호"
-        }
-
-        r = self.listCorp.currentRow()
-        # c = self.listCorp.currentColumn()
-        if self.listCorp.item(r, 1).text() != "":
-            print(self.listCorp.item(r, 1).text())
-            self.lblCorp.setText(self.listCorp.item(r, 1).text())
-            corpNum = jjson.getCompNum(self.listCorp.item(r, 0).text())
-            res = jjson.getCompany(corpNum)
-            i = 0
-            for key in dictName.keys():
-                param[dictName[key]] = res[key]
-
-            print("param")
-            print(param)
-            self.showCorpDetail(param)
-
-
-    def showCorpDetail(self, param: dict):
-        if self.detailCorp.rowCount != len(param):
-            self.detailCorp.setRowCount(len(param))
-            self.detailCorp.setColumnCount(1)
-            rHeader = self.detailCorp.horizontalHeader()
-            rHeader.resizeSection(0, 300)
-            lparam = list(param.keys())
-            for i in range(0, len(param)):
-                item = QtWidgets.QTableWidgetItem()
-                item.setText(lparam[i])
-                self.detailCorp.setVerticalHeaderItem(i, item)
-                self.detailCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(param[lparam[i]]))
-                self.detailCorp.setCurrentCell(i, 0)
-                cell = self.detailCorp.currentItem()
-                if lparam[i] == "홈페이지" and cell.text() != "-":
-                    cell.setForeground(QtGui.QBrush(QtCore.Qt.blue))
-                    font = QtGui.QFont()
-                    font.setUnderline(True)
-                    cell.setFont(font)
-                else:
-                    cell.setForeground(QtGui.QBrush(QtCore.Qt.black))
-                    font = QtGui.QFont()
-                    font.setUnderline(False)
-                    cell.setFont(font)
-
-
-        return 0
-
-
-    def setConfig(self, **kwargs):
-        self.confCorpList(kwargs.items())
-
-
-    def confCorpList(self, items:  tuple):
-        global data_params
-
-        for key, value in items:
-            data_params[key] = value
-            if key == 'coName':
-                data_params['len'] = len(value)
-        
-        self.listCorp.setRowCount(data_params['len'])
-        self.listCorp.setColumnCount(2)
-        cHeader = self.listCorp.verticalHeader()
-        cHeader.setDefaultSectionSize(35)
-        rHeader = self.listCorp.horizontalHeader()
-        rHeader.resizeSection(0, 120)
-        rHeader.resizeSection(1, 204)
-
-        self.pgBarSearch.setValue(0)
+        self.fri_up_label.setText(_translate("MainWindow", str(up[4]) + "% 상승"))
+        self.fri_down_label.setText(_translate("MainWindow", str(down[4]) + "% 하락"))
+        self.fri_eq_label.setText(_translate("MainWindow", str(eq[4]) + "% 동일"))
 
     
     def inputResult(self, param=None):  # Coding by Jang Byunghun
@@ -618,30 +487,205 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
         
         self.graphBox.addWidget(self.canvasStick)   
 
-    def setLabel(self, up, down, eq):
-        _translate = QtCore.QCoreApplication.translate
+    # Coding by Shim Inyong
+    def btnClickedEvent(self):
+        print("A")
+        param = {
+            "len": int,
+            "coIdx": int,
+        }
+        print(self.txtBoxName.text())
+        if self.txtBoxName.text() == "":
+            self.insert_data(data_params)
+        else:
+            #print(data_params)
+            param["len"] = 1
+            if self.comBoxProp.currentText() == "기업명":
+                print(self.txtBoxName.text())
+                if self.txtBoxName.text() in data_params["coName"]:
+                    param["coIdx"] = data_params["coName"].index(self.txtBoxName.text())
+                else:
+                    param["len"] = 0
+            else:
+                if self.txtBoxName.text() in data_params["coCode"]:
+                    param["coIdx"] = data_params["coCode"].index(self.txtBoxName.text())
+                else:
+                    param["len"] = 0
+
+            self.insert_data(param)
+            if(param["len"] > 0):
+                self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
+
+    # Coding by Shim Inyong
+    def corpDoubleClickedEvent(self):
+        r = self.listCorp.currentRow()
+
+        if self.listCorp.item(r, 1).text() != "":
+            self.code_lineEdit.setText(self.listCorp.item(r, 0).text())
+            self.name_lineEdit.setText(self.listCorp.item(r, 1).text())
+
+            self.tabWidget.setCurrentIndex(self.tabWidget.currentIndex()-1)
+        return 0
+
+    # Coding by Shim Inyong
+    def radioClickedEvent(self):
+        self.mainSearchBtnClickedEvent()
+
+    # Coding by Shim Inyong
+    def detailCellClicked(self):
+        r = self.detailCorp.currentRow()
+        rHeadrer = self.detailCorp.verticalHeaderItem(r)
+
+        if rHeadrer.text() == "홈페이지" and self.detailCorp.item(r, 0).text() != '-':
+            webbrowser.open(self.detailCorp.currentItem().text())
+
+    # Coding by Shim Inyong
+    def srcByCodeEvent(self):
+        global data_params
+
+        lst = np.array(data_params["coCode"])
+        val = np.where(lst == self.code_lineEdit.text())[0]
+        if val >= 0:
+            self.name_lineEdit.setText(data_params["coName"][val[0]])
+            self.mainSearchBtnClickedEvent()
+
+    # Coding by Shim Inyong
+    def srcByNameEvent(self):
+        global data_params
+
+        lst = np.array(data_params["coName"])
+        val = np.where(lst == self.name_lineEdit.text())[0]
+        if val:
+            self.code_lineEdit.setText(data_params["coCode"][val[0]])
+            self.mainSearchBtnClickedEvent()
+
+    # Coding by Shim Inyong
+    def listIdxChangedEvent(self):
+        param = {}
+        dictName = { 
+            "corp_name": "기업명", 
+            "ceo_nm"   : "대표", 
+            "adres"    : "주소",
+            "hm_url"   : "홈페이지", 
+            "phn_no"   : "전화번호",
+            "emp"      : "직원수",
+            "salary"   : "평균급여",
+            "totCapi"  : "자산총계",
+            "liabilities": "부채총계",
+            "take"     : "매출액",
+            "opProfit" : "영업이익",
+        }
+
+        r = self.listCorp.currentRow()
+        # c = self.listCorp.currentColumn()
+        if self.listCorp.item(r, 1).text() != "":
+            print(self.listCorp.item(r, 1).text())
+            self.lblCorp.setText(self.listCorp.item(r, 1).text())
+            corpNum = readCompDetail.getCompNum(self.listCorp.item(r, 0).text())
+            
+            # 회사 기본정보 parsing
+            res = readCompDetail.getCompany(corpNum)
+            i = 0
+            if "corp_name" in res:
+                param[dictName["corp_name"]] = res["corp_name"]
+                param[dictName["ceo_nm"]] = res["ceo_nm"]
+                param[dictName["adres"]] = res["adres"]
+                param[dictName["hm_url"]] = res["hm_url"]
+                param[dictName["phn_no"]] = res["phn_no"]
+
+            # 임직원 정보 parsing
+            res = readCompDetail.getEmployees(corpNum)
+            tot = 0
+            sa = 0
+            k = 0
+            if "list" in res:
+                for i in range(len(res["list"])):
+                    #print(j["list"][i])
+                    if res["list"][i]["sm"] != "-":
+                        tot += int(res["list"][i]["sm"].replace(",", ""))
+                    if res["list"][i]["jan_salary_am"] != "-":
+                        sa += int(res["list"][i]["jan_salary_am"].replace(",", ""))
+                        k += 1
+                
+            param[dictName["emp"]] = format(tot, ",") + "명"
+            if k > 0:
+                param[dictName["salary"]] = format(int(sa/k), ",") + "원"
+
+            # 재무제표 데이터 parsing
+            res = readCompDetail.getCompanyFin(corpNum)
+            if "list" in res:
+                for i in range(len(res["list"])):
+                    report = res["list"][i]
+                    if report["fs_nm"] == "연결재무제표":
+                        if report["account_nm"] == "자산총계":
+                            param[dictName["totCapi"]] = report["thstrm_amount"] +"원"
+                        elif report["account_nm"] == "부채총계":
+                            param[dictName["liabilities"]] = report["thstrm_amount"] + "원"
+                        elif report["account_nm"] == "매출액":
+                            param[dictName["take"]] = report["thstrm_amount"] + "원"
+                        elif report["account_nm"] == "영업이익":
+                            param[dictName["opProfit"]] = report["thstrm_amount"] + "원"
+
+
+            print("param")
+            print(param)
+            self.showCorpDetail(param)
+
+    # Coding by Shim Inyong
+    def showCorpDetail(self, param: dict):
+        if self.detailCorp.rowCount != len(param):
+            self.detailCorp.setRowCount(len(param))
+            self.detailCorp.setColumnCount(1)
+            rHeader = self.detailCorp.horizontalHeader()
+            rHeader.resizeSection(0, 330)
+            lparam = list(param.keys())
+            for i in range(0, len(param)):
+                item = QtWidgets.QTableWidgetItem()
+                item.setText(lparam[i])
+                self.detailCorp.setVerticalHeaderItem(i, item)
+                self.detailCorp.setItem(i, 0, QtWidgets.QTableWidgetItem(param[lparam[i]]))
+                self.detailCorp.setCurrentCell(i, 0)
+                cell = self.detailCorp.currentItem()
+                if i >= 5:
+                    cell.setTextAlignment(QtCore.Qt.AlignVCenter | QtCore.Qt.AlignRight)
+                if lparam[i] == "홈페이지" and cell.text() != "-":
+                    cell.setForeground(QtGui.QBrush(QtCore.Qt.blue))
+                    font = QtGui.QFont()
+                    font.setUnderline(True)
+                    cell.setFont(font)
+                else:
+                    cell.setForeground(QtGui.QBrush(QtCore.Qt.black))
+                    font = QtGui.QFont()
+                    font.setUnderline(False)
+                    cell.setFont(font)
+
+
+        return 0
+
+    # Coding by Shim Inyong
+    def setConfig(self, **kwargs):
+        self.confCorpList(kwargs.items())
+
+    # Coding by Shim Inyong
+    def confCorpList(self, items):
+        global data_params
+
+        for key, value in items:
+            data_params[key] = value
+            if key == 'coName':
+                data_params['len'] = len(value)
         
-        self.mon_up_label.setText(_translate("MainWindow", str(up[0]) + "% 상승"))
-        self.mon_down_label.setText(_translate("MainWindow", str(down[0]) + "% 하락"))
-        self.mon_eq_label.setText(_translate("MainWindow", str(eq[0]) + "% 동일"))
+        self.listCorp.setRowCount(data_params['len'])
+        self.listCorp.setColumnCount(2)
+        cHeader = self.listCorp.verticalHeader()
+        cHeader.setDefaultSectionSize(35)
+        rHeader = self.listCorp.horizontalHeader()
+        rHeader.resizeSection(0, 120)
+        rHeader.resizeSection(1, 204)
 
-        self.tue_up_label.setText(_translate("MainWindow", str(up[1]) + "% 상승"))
-        self.tue_down_label.setText(_translate("MainWindow", str(down[1]) + "% 하락"))
-        self.tue_eq_label.setText(_translate("MainWindow", str(eq[1]) + "% 동일"))
+        self.pgBarSearch.setValue(0)
 
-        self.wed_up_label.setText(_translate("MainWindow", str(up[2]) + "% 상승"))
-        self.wed_down_label.setText(_translate("MainWindow", str(down[2]) + "% 하락"))
-        self.wed_eq_label.setText(_translate("MainWindow", str(eq[2]) + "% 동일"))
-
-        self.thu_up_label.setText(_translate("MainWindow", str(up[3]) + "% 상승"))
-        self.thu_down_label.setText(_translate("MainWindow", str(down[3]) + "% 하락"))
-        self.thu_eq_label.setText(_translate("MainWindow", str(eq[3]) + "% 동일"))
-
-        self.fri_up_label.setText(_translate("MainWindow", str(up[4]) + "% 상승"))
-        self.fri_down_label.setText(_translate("MainWindow", str(down[4]) + "% 하락"))
-        self.fri_eq_label.setText(_translate("MainWindow", str(eq[4]) + "% 동일"))
-
-
+    # Coding by Shim Inyong
     def plotLine(self, df):
         if len(df) > 0:
             ma_ls = [5, 20, 60, 120]
@@ -667,7 +711,7 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
             
             # df.iloc[:, blShow].plot()
         
-
+    # Coding by Shim Inyong
     def insert_data(self, param):
         global data_params
         # print(param)

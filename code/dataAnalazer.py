@@ -1,8 +1,10 @@
+"""
+    코딩: 정보경
+"""
 from typing import Dict, List
 import pandas as pd
 from requests.models import parse_header_links
 import readFinanceData
-from collections import defaultdict
 
 def dataAnalyze(corp_code, start_date=None, end_date=None): #정보경 분석 완료 데이터 return
     param = {
