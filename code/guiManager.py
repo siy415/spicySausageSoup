@@ -403,8 +403,15 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
                 self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
 
     def mainSearchBtnClickedEvent(self):    # Coding by Jang Byunghun
+        diff_date = self.start_dateEdit.dateTime().daysTo(self.end_dateEdit.dateTime())
+
         plt.cla()
         self.graphBox.removeWidget(self.canvasStick)
+
+        if diff_date < 0:
+            return
+        elif diff_date < 7:
+            return
 
         if self.start_dateEdit.text() != self.end_dateEdit.text() and \
            self.code_lineEdit.text() != "":
