@@ -4,7 +4,7 @@ from requests.models import parse_header_links
 import readFinanceData
 from collections import defaultdict
 
-def dataAnalyze(corp_code, start_date=None, end_date=None):
+def dataAnalyze(corp_code, start_date=None, end_date=None): #정보경 분석 완료 데이터 return
     param = {
         "start_val"  : int,
         "end_val"    : int,
@@ -17,7 +17,7 @@ def dataAnalyze(corp_code, start_date=None, end_date=None):
 
     print(start_date, end_date)
 
-    pdata = readFinanceData.DataReader(corp_code, start_date, end_date)
+    pdata = readFinanceData.DataReader(corp_code, start_date, end_date) #정보경 데이터 분석 시작
     if len(pdata) > 0:
         df2 = pd.DataFrame(pdata)
         #df2.head()
@@ -38,7 +38,7 @@ def dataAnalyze(corp_code, start_date=None, end_date=None):
         min_val = df2['Close'].min() #기간 내 최저가
         #print('기간 내 최저가:', int(min_val))
 
-        mm_val = int(max_val)-int(min_val) #기간 내 최고, 최저가 차이
+        mm_val = int(max_val)-int(min_val) #정보경 기간 내 최고, 최저가 차이
         #print('기간 내 최고가, 최저가 차이:', mm_val)
 
         param["start_val"] = start_val
@@ -55,11 +55,11 @@ def dataAnalyze(corp_code, start_date=None, end_date=None):
         print(df2)
         #df2['Days'] = df2['Date'].dt2.weekday 날짜 column 기입
 
-        stockData = [] #리스트 선언
+        stockData = [] #정보경 리스트 선언
         lstDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] #리스트 조건
 
         i = 0
-        for dow in lstDays: #상승하락동일 카운트\
+        for dow in lstDays: #정보경 상승하락동일 카운트\
             df3 = df2[pdata['DOW'] == dow]
             up_count = len(df3[df3['Up8'] == True]) #up count
             same_count = len(df3[df3['Same9'] == True]) #same count
@@ -67,12 +67,12 @@ def dataAnalyze(corp_code, start_date=None, end_date=None):
 
             total_count = len(df3) #total값
             
-            #상승하락동일 퍼센트계산
+            #정보경 상승하락동일 퍼센트계산
             up_countval = round((up_count/total_count)*100,2) # 퍼센트단위 계산
             same_countval = round((same_count/total_count)*100,2)
             down_countval = round((down_count/total_count)*100,2)
 
-            #count 값 dict 저장
+            #정보경 count 값 dict 저장
             dict = {
                 'up'      : up_count,
                 'down'    : down_count, 
@@ -86,7 +86,7 @@ def dataAnalyze(corp_code, start_date=None, end_date=None):
             i += 1
             
         korDays = ["월요일", "화요일", "수요일", "목요일", "금요일"]
-        #매수 매도 추천일자 출력.
+        #정보경 매수 매도 추천일자 출력.
 
         recommend = {}
         recommend["sell"] = []
@@ -98,7 +98,7 @@ def dataAnalyze(corp_code, start_date=None, end_date=None):
             down = stockData[i].get('downval')
             same = stockData[i].get('sameval')
 
-        #분석 시작
+        #정보경 데이터 분석 시작
             if up == down or \
             up == same or \
             down == same:
