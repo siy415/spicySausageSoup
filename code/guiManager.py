@@ -464,7 +464,7 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
             eq_data = [0, 0, 0, 0, 0]
             return
         else:
-            print("in")
+            # print("in")
             up_data = [param['stockData'][0]['upval'], param['stockData'][1]['upval'], param['stockData'][2]['upval'], param['stockData'][3]['upval'], param['stockData'][4]['upval']]
             down_data = [param['stockData'][0]['downval'], param['stockData'][1]['downval'], param['stockData'][2]['downval'], param['stockData'][3]['downval'], param['stockData'][4]['downval']]
             eq_data = [param['stockData'][0]['sameval'], param['stockData'][1]['sameval'], param['stockData'][2]['sameval'], param['stockData'][3]['sameval'], param['stockData'][4]['sameval']]
@@ -489,19 +489,16 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
 
     # Coding by Shim Inyong
     def btnClickedEvent(self):
-        print("A")
         param = {
             "len": int,
             "coIdx": int,
         }
-        print(self.txtBoxName.text())
         if self.txtBoxName.text() == "":
             self.insert_data(data_params)
         else:
             #print(data_params)
             param["len"] = 1
             if self.comBoxProp.currentText() == "기업명":
-                print(self.txtBoxName.text())
                 if self.txtBoxName.text() in data_params["coName"]:
                     param["coIdx"] = data_params["coName"].index(self.txtBoxName.text())
                 else:
@@ -579,7 +576,6 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
         r = self.listCorp.currentRow()
         # c = self.listCorp.currentColumn()
         if self.listCorp.item(r, 1).text() != "":
-            print(self.listCorp.item(r, 1).text())
             self.lblCorp.setText(self.listCorp.item(r, 1).text())
             corpNum = readCompDetail.getCompNum(self.listCorp.item(r, 0).text())
             
@@ -627,8 +623,6 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
                             param[dictName["opProfit"]] = report["thstrm_amount"] + "원"
 
 
-            print("param")
-            print(param)
             self.showCorpDetail(param)
 
     # Coding by Shim Inyong

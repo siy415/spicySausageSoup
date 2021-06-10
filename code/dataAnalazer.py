@@ -17,7 +17,7 @@ def dataAnalyze(corp_code, start_date=None, end_date=None): #정보경 분석 �
         "stockData"  : List,
     }
 
-    print(start_date, end_date)
+    # print(start_date, end_date)
 
     pdata = readFinanceData.DataReader(corp_code, start_date, end_date) #정보경 데이터 분석 시작
     if len(pdata) > 0:
@@ -54,8 +54,8 @@ def dataAnalyze(corp_code, start_date=None, end_date=None): #정보경 분석 �
         df2['Same9'] = df2.Close == df2.Close.shift() # 동일값일 경우 True
         df2['Down10'] = df2.Close < df2.Close.shift() # 하락 한 경우 True
 
-        print(df2)
-        #df2['Days'] = df2['Date'].dt2.weekday 날짜 column 기입
+        # print(df2)
+        # df2['Days'] = df2['Date'].dt2.weekday 날짜 column 기입
 
         stockData = [] #정보경 리스트 선언
         lstDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] #리스트 조건
