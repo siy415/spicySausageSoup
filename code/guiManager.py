@@ -689,7 +689,7 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
                     maClose = df['Close'].rolling(window=ma, min_periods=1).mean()
                     df['MA' + str(ma)] = maClose
                     self.axStick.plot_date(df["Date"], df["MA" + str(ma)], ':', label="MA" + str(ma), linewidth=1)
-            self.axStick.plot_date(df["Date"], df["Close"], '-', label="Close", linewidth=2)
+            self.axStick.plot_date(df["Date"], df["Close"], '-', label="Close", linewidth=2, color="gray")
 
             plt.xlim([df["Date"][0], df["Date"][len(df)-1]])
             
