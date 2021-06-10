@@ -611,8 +611,6 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
         
         self.graphBox.addWidget(self.canvasStick)   
 
-        print(plt.axis())
-
     def setLabel(self, up, down, eq):
         _translate = QtCore.QCoreApplication.translate
         
@@ -661,7 +659,6 @@ class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
             self.graphBox.addWidget(self.canvasStick)
             
             # df.iloc[:, blShow].plot()
-            print(plt.axis())
         
 
     def insert_data(self, param):
