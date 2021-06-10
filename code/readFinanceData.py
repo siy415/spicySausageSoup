@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 
-def _validate_dates(start_date, end_date):
+def _validate_dates(start_date, end_date):  # readFinanceData by Jang Dongchan
     start_date = to_datetime(start_date)
     end_date = to_datetime(end_date)
 
@@ -18,7 +18,7 @@ def _validate_dates(start_date, end_date):
     return start_date, end_date
 
 
-class WebDataReader:
+class WebDataReader:  # readFinanceData by Jang Dongchan
 
     def __init__(self, corp_code, start_date=None, end_date=None):
         self.corp_code = corp_code
@@ -48,7 +48,7 @@ class WebDataReader:
         return df
 
 
-def DataReader(corp_code, start_date=None, end_date=None):
+def DataReader(corp_code, start_date=None, end_date=None):  # readFinanceData by Jang Dongchan
     start_date, end_date = _validate_dates(start_date, end_date)
 
     if corp_code[:5].isdigit():
