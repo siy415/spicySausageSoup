@@ -32,7 +32,7 @@ data_params = {
     'coCode': list,
 }
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(object):    # GUI Based Design by Jang Byunghun
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -313,7 +313,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow):    # GUI Based Design by Jang Byunghun
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "주가 분석 프로그램 (Prod. 인생력전)"))
         self.codelabel.setText(_translate("MainWindow", "종목코드  : "))
@@ -402,7 +402,7 @@ class Ui_MainWindow(object):
             if(param["len"] > 0):
                 self.listCorp.setCurrentCell(0, not self.listCorp.currentColumn())
 
-    def mainSearchBtnClickedEvent(self):
+    def mainSearchBtnClickedEvent(self):    # Coding by Jang Byunghun
         plt.cla()
         self.graphBox.removeWidget(self.canvasStick)
 
@@ -410,8 +410,6 @@ class Ui_MainWindow(object):
            self.code_lineEdit.text() != "":
             param = dataAnalazer.dataAnalyze(self.code_lineEdit.text(), self.start_dateEdit.text(), self.end_dateEdit.text())
             df = readFinanceData.DataReader(self.code_lineEdit.text(), self.start_dateEdit.text(), self.end_dateEdit.text())
-            #print(param)
-            #print(df)
             self.inputResult(param)
             if self.stick_radioButton.isChecked():
                 self.plotStick(param)
@@ -540,7 +538,7 @@ class Ui_MainWindow(object):
         self.pgBarSearch.setValue(0)
 
     
-    def inputResult(self, param=None):
+    def inputResult(self, param=None):  # Coding by Jang Byunghun
         if not param:
             start_value = 0
             end_value = 0
@@ -578,7 +576,7 @@ class Ui_MainWindow(object):
         self.rcmd_sell_date_edit.setText(sell_rcmd_date)
 
 
-    def plotStick(self, param=None):
+    def plotStick(self, param=None):    # Coding by Jang Byunghun
         x_label_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
         bar_width = 0.2
         bar_height = 1
@@ -598,7 +596,7 @@ class Ui_MainWindow(object):
         self.axStick.bar(index, up_data, color='r', align='edge', edgecolor='lightgray', width=bar_width, label='UP')
         self.axStick.bar(index+bar_width, down_data, color='b', align='edge', edgecolor='lightgray', width=bar_width, label='DOWN')
         self.axStick.bar(index+bar_width+bar_width, eq_data, color='y', align='edge', edgecolor='lightgray', width=bar_width, label='EQUAL')
-
+        
         self.axStick.legend(loc='upper right', fontsize=7.5)
         
         plt.xticks(index + bar_width + 0.1, x_label_list)
@@ -610,9 +608,10 @@ class Ui_MainWindow(object):
 
         self.canvasStick = FigureCanvasQTAgg(self.figStick)
         self.canvasStick.draw()
+        
+        self.graphBox.addWidget(self.canvasStick)   
 
-        self.graphBox.addWidget(self.canvasStick)
-
+        print(plt.axis())
 
     def setLabel(self, up, down, eq):
         _translate = QtCore.QCoreApplication.translate
@@ -650,6 +649,7 @@ class Ui_MainWindow(object):
             self.axStick.plot_date(df["Date"], df["Close"], '-', label="Close", linewidth=2)
 
             plt.xlim([df["Date"][0], df["Date"][len(df)-1]])
+            
             self.axStick.legend(loc='upper left', fontsize=7.5)
             self.axStick.set_ylabel(u"(Unit: Won)")
 
@@ -659,7 +659,9 @@ class Ui_MainWindow(object):
             self.canvasStick = FigureCanvasQTAgg(self.figStick)
             self.canvasStick.draw()
             self.graphBox.addWidget(self.canvasStick)
+            
             # df.iloc[:, blShow].plot()
+            print(plt.axis())
         
 
     def insert_data(self, param):
