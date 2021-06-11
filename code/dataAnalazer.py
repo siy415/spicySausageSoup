@@ -101,9 +101,9 @@ def dataAnalyze(corp_code, start_date=None, end_date=None): #정보경 분석 �
             same = stockData[i].get('sameval')
 
         #정보경 데이터 분석 시작
-            if up == down or \
-            up == same or \
-            down == same:
+            if (up != 0 and down != 0 and up == down) or \
+            (up != 0 and same != 0 and up == same) or \
+            (down != 0 and same != 0 and down == same):
                 pass
             elif up == max(up, down, same):
                     recommend["sell"].append(korDays[i])
